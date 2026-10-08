@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EzExcel – Közösségi Tér és Sablonok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0E7C6B; --green-dk:#095A4E; --green-lt:#DFF2EE; --green-sel:#14A38B;
+  --paper:#FFFFFF; --canvas:#F7F8F7; --head:#EEF0EE; --grid:#E0E3E0; --line:#C9CEC9;
+  --ink:#1F2A22; --muted:#5E6B62; --note:#FFF3B0; --note-line:#E8D36A; --danger:#B3261E;
+  --ui:"Archivo", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", Consolas, "Courier New", monospace;
+  --cw:96px; --rh:26px; --gut:44px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --green:#2BB39C; --green-dk:#1B7F6F; --green-lt:#183330; --green-sel:#3CCFB5;
+    --paper:#1C211E; --canvas:#161A17; --head:#232924; --grid:#2A312C; --line:#3A433D;
+    --ink:#E6ECE7; --muted:#9AA79E; --note:#4A4320; --note-line:#7A6C2A;
+  }
+}
+:root[data-theme="dark"]{
+  --green:#2BB39C; --green-dk:#1B7F6F; --green-lt:#183330; --green-sel:#3CCFB5;
+  --paper:#1C211E; --canvas:#161A17; --head:#232924; --grid:#2A312C; --line:#3A433D;
+  --ink:#E6ECE7; --muted:#9AA79E; --note:#4A4320; --note-line:#7A6C2A;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;height:100%;font-family:var(--ui);color:var(--ink);background:var(--canvas);display:flex;flex-direction:column;font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green-sel);outline-offset:2px}
+a{color:var(--green)}
+
+/* ---------- Title bar + ribbon ---------- */
+.titlebar{background:var(--green);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800;font-size:18px;letter-spacing:-.01em}
+.logo-mark{width:30px;height:30px;display:block;flex:0 0 auto}
+.titlebar .doc{opacity:.85;font-size:13px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{display:flex;border:1px solid rgba(255,255,255,.55);border-radius:3px;overflow:hidden;flex:0 0 auto}
+.lang button{background:transparent;border:0;color:#fff;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;opacity:.8}
+.lang button:hover{opacity:1}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--green-dk);opacity:1}
+@media (max-width:640px){.titlebar .doc{display:none}.lang{margin-left:auto}}
+.ribbon{background:var(--green-dk);display:flex;gap:2px;padding:0 10px;overflow-x:auto}
+.ribbon a{color:#fff;text-decoration:none;padding:9px 16px 8px;font-size:14px;font-weight:500;border-radius:6px 6px 0 0;white-space:nowrap;opacity:.85}
+.ribbon a:hover{opacity:1;background:rgba(255,255,255,.08)}
+.ribbon a[aria-current="page"]{background:var(--paper);color:var(--green);opacity:1;font-weight:700}
+
+/* ---------- Formula bar ---------- */
+.fbar{display:flex;align-items:stretch;background:var(--paper);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.namebox{width:110px;padding:6px 10px;border-right:1px solid var(--line);color:var(--ink)}
+.fx{padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-style:italic;font-family:Georgia,serif}
+.formula{padding:6px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;color:var(--ink)}
+.formula .fn{color:var(--green);font-weight:500}
+.formula .str{color:#A8551B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .formula .str{color:#E9A06B}}
+
+/* ---------- Sheet ---------- */
+.sheet{flex:1;display:grid;grid-template-columns:var(--gut) 1fr;grid-template-rows:var(--rh) 1fr;overflow:hidden;background:var(--paper)}
+.corner{background:var(--head);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
+.corner::after{content:"";position:absolute;right:4px;bottom:4px;border:0 solid transparent;border-width:0 0 10px 10px;border-bottom-color:var(--line)}
+.colhead,.rowhead{background:var(--head);color:var(--muted);font-size:12px;overflow:hidden;user-select:none}
+.colhead{display:flex;border-bottom:1px solid var(--line)}
+.colhead span{flex:0 0 var(--cw);text-align:center;line-height:var(--rh);border-right:1px solid var(--grid)}
+.colhead span.on{background:var(--green-lt);color:var(--green);font-weight:700;box-shadow:inset 0 -2px 0 var(--green)}
+.rowhead{border-right:1px solid var(--line)}
+.rowhead span{display:block;height:var(--rh);line-height:var(--rh);text-align:center;border-bottom:1px solid var(--grid)}
+.cells{overflow:auto;position:relative;background-color:var(--paper);
+  background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
+  background-size:var(--cw) var(--rh);background-position:-1px -1px}
+.page{padding:calc(var(--rh)*2) calc(var(--cw)*.5) calc(var(--rh)*3);max-width:1100px}
+.page[hidden]{display:none}
+
+/* ---------- Selection block ---------- */
+.block{background:var(--paper);border:1px solid var(--line);position:relative}
+.block.sel{border:2px solid var(--green-sel)}
+.block.sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
+.block-h{background:var(--head);border-bottom:1px solid var(--line);padding:4px 12px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;font-family:var(--mono)}
+.block-b{padding:18px 20px}
+
+h1{font-size:clamp(30px,5vw,52px);line-height:1.05;letter-spacing:-.025em;font-weight:800;margin:0 0 16px}
+h2{font-size:20px;margin:0 0 14px;letter-spacing:-.01em}
+h3{font-size:18px;margin:6px 0 8px;letter-spacing:-.01em}
+.lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
+
+/* Home */
+.hero{margin-bottom:calc(var(--rh)*2)}
+.hero .block-b{padding:36px 36px 40px}
+.hero h1 .eq{color:var(--green);font-family:var(--mono);font-weight:500;margin-right:.1em}
+.go{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:calc(var(--rh));}
+.go a{display:flex;gap:16px;align-items:flex-start;text-decoration:none;color:var(--ink);padding:20px 22px;background:var(--paper);border:1px solid var(--line);position:relative;transition:border-color .15s}
+.go a:hover{border:2px solid var(--green-sel);padding:19px 21px}
+.go a:hover::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
+.go .ico{font-size:28px;line-height:1}
+.go strong{display:block;font-size:19px;margin-bottom:4px}
+.go small{color:var(--muted);font-size:14px}
+
+/* Forms */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600;color:var(--muted)}
+input[type=text],select,textarea{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:8px 10px;min-height:38px}
+input[type=text]:focus,select:focus,textarea:focus{outline:none;border:2px solid var(--green-sel);padding:7px 9px}
+textarea{min-height:96px;resize:vertical}
+input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:100%;background:var(--canvas)}
+.btn{background:var(--green);color:#fff;border:0;border-radius:3px;padding:9px 18px;font-weight:600;cursor:pointer;min-height:38px}
+.btn:hover{background:var(--green-dk)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--green);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--green);background:var(--green-lt)}
+
+/* Brainstorm */
+.bs-grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:calc(var(--rh)*1.5);align-items:start}
+@media (max-width:860px){.bs-grid{grid-template-columns:1fr}}
+.ideas{display:flex;flex-direction:column;gap:var(--rh)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.tag{display:inline-block;background:var(--green-lt);color:var(--green);font-size:12px;font-weight:600;padding:2px 8px;border-radius:2px}
+.idea p{margin:0 0 14px;max-width:70ch}
+.actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.vote{background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:5px 12px;cursor:pointer;font-size:14px}
+.vote:hover{border-color:var(--green)}
+.vote.on{background:var(--green-lt);border-color:var(--green);color:var(--green);font-weight:600}
+.cmt-toggle{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;padding:5px 6px}
+.comments{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.comment{background:var(--note);border-left:3px solid var(--note-line);padding:10px 12px;position:relative}
+.comment::before{content:"";position:absolute;top:0;right:0;border-style:solid;border-width:0 9px 9px 0;border-color:transparent var(--danger) transparent transparent}
+.comment .who{font-size:13px;font-weight:600}
+.comment .who time{font-weight:400;color:var(--muted);margin-left:8px}
+.comment p{margin:4px 0 6px;font-size:14px}
+.cmt-form{display:flex;gap:8px}
+.cmt-form input{flex:1}
+
+/* Templates */
+.tpl-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:var(--rh)}
+.filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:0;margin-bottom:var(--rh);border:1px solid var(--line);background:var(--paper)}
+.filters > *{border:0;border-right:1px solid var(--line);border-radius:0}
+.filters > *:last-child{border-right:0}
+.filters input,.filters select{min-height:40px}
+@media (max-width:860px){.filters{grid-template-columns:1fr 1fr}.filters > *{border-bottom:1px solid var(--line)}.filters input{grid-column:1/-1}}
+.tpl-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--rh)}
+.tpl .thumb{aspect-ratio:16/9;background:var(--canvas);display:grid;place-items:center;border-bottom:1px solid var(--line);overflow:hidden;color:var(--muted);font-family:var(--mono);font-size:12px;
+  background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:32px 14px}
+.tpl .thumb img{width:100%;height:100%;object-fit:cover}
+.tpl .block-b{padding:14px 16px}
+.tpl p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.empty{text-align:center;padding:48px 20px}
+.empty .big{font-family:var(--mono);font-size:34px;color:var(--danger);font-weight:500;margin-bottom:8px}
+.empty p{color:var(--muted);margin:0}
+.ad{margin-top:calc(var(--rh)*2);border:1px dashed var(--line);background:var(--canvas);color:var(--muted);text-align:center;padding:30px 12px;font-size:12px;letter-spacing:.04em}
+
+/* Dialog */
+dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(520px,calc(100% - 24px));box-shadow:0 18px 50px rgba(0,0,0,.28);border-radius:4px}
+dialog::backdrop{background:rgba(6,38,33,.45)}
+.dlg-h{background:var(--green);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
+.dlg-h h2{margin:0;font-size:16px}
+.dlg-x{background:none;border:0;color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:0 4px}
+.dlg-b{padding:20px}
+.dlg-f{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 20px}
+.err{color:var(--danger);font-size:13px;min-height:1.2em;margin:0}
+
+/* Sheet tabs + status */
+.tabs{display:flex;align-items:stretch;background:var(--head);border-top:1px solid var(--line);font-size:13px;overflow-x:auto}
+.tabs .nav{padding:0 12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.tabs a{padding:6px 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--line);white-space:nowrap}
+.tabs a:hover{background:var(--paper)}
+.tabs a[aria-current="page"]{background:var(--paper);color:var(--green);font-weight:700;box-shadow:inset 0 -3px 0 var(--green)}
+.status{display:flex;gap:18px;align-items:center;justify-content:space-between;background:var(--green);color:#fff;font-size:12px;padding:3px 14px;flex-wrap:wrap}
+.status .sum{display:flex;gap:18px}
+.disclaimer{margin:0;padding:4px 14px 5px;font-size:11px;color:var(--muted);background:var(--head);border-top:1px solid var(--line)}
+
+/* Drag-select & typing */
+.drag-sel{position:absolute;left:0;top:0;width:0;height:0;border:2px solid var(--green-sel);background:color-mix(in srgb,var(--green-sel) 12%,transparent);pointer-events:none;z-index:4;opacity:0}
+.drag-sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
+.xcursor{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;z-index:5;opacity:0}
+.xcursor svg{width:100%;height:100%;transition:transform .1s;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+.xcursor.down svg{transform:scale(.84)}
+#page-home .hero .lead,#page-home .go{transition:opacity .55s ease-out,transform .55s ease-out}
+#page-home .go{transition-delay:.18s}
+#page-home.intro .hero{visibility:hidden}
+#page-home.intro.typing .hero{visibility:visible;animation:heroIn .2s ease-out}
+#page-home.intro .hero .lead,#page-home.intro .go{opacity:0;transform:translateY(8px)}
+#page-home.typing h1::after{content:"";display:inline-block;width:3px;height:.85em;background:var(--green);margin-left:5px;vertical-align:-.06em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@keyframes heroIn{from{background:color-mix(in srgb,var(--green-sel) 12%,var(--paper))}}
+.toast{position:fixed;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:3px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99}
+.toast.show{opacity:1}
+
+@media (max-width:640px){
+  :root{--cw:72px;--gut:32px}
+  .page{padding:var(--rh) 14px calc(var(--rh)*2)}
+  .hero .block-b{padding:24px 20px}
+  .namebox{width:64px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="titlebar">
+  <a class="logo" href="#home" data-i18n-aria="aria.home"><svg class="logo-mark" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M1 10.5h28M1 19.5h28M10.5 1v28M19.5 1v28" stroke="#fff" stroke-width="1.4" opacity=".55"/><rect x="10.5" y="10.5" width="9" height="9" fill="none" stroke="#fff" stroke-width="2.4"/><rect x="17" y="17" width="5" height="5" fill="#fff" stroke="var(--green)" stroke-width="1"/></svg>EzExcel</a>
+  <span class="doc" id="docname"></span>
+  <div class="lang" role="group" data-i18n-aria="aria.lang">
+    <button type="button" data-lang="hu">HU</button><button type="button" data-lang="en">EN</button>
+  </div>
+</header>
+<nav class="ribbon" data-i18n-aria="aria.nav">
+  <a href="#home" data-page="home" data-i18n="nav.home"></a>
+  <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
+  <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
+  <a href="#about" data-page="about" data-i18n="nav.about"></a>
+  <a href="#privacy" data-page="privacy" data-i18n="nav.privacy"></a>
+  <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
+</nav>
+<div class="fbar" aria-hidden="true">
+  <div class="namebox" id="namebox">A1</div>
+  <div class="fx">fx</div>
+  <div class="formula" id="formula"></div>
+</div>
+
+<div class="sheet">
+  <div class="corner"></div>
+  <div class="colhead" id="colhead"></div>
+  <div class="rowhead" id="rowhead"></div>
+  <main class="cells" id="cells">
+
+    <!-- Főoldal -->
+    <section class="page" id="page-home" data-page="home">
+      <div class="block sel hero">
+        <div class="block-h"><span id="hero-range">A1:F6</span><span data-i18n="home.merged"></span></div>
+        <div class="block-b">
+          <h1><span class="eq">=</span><span data-i18n="home.h1"></span></h1>
+          <p class="lead" data-i18n="home.lead"></p>
+        </div>
+      </div>
+      <div class="go">
+        <a href="#brainstorming">
+          <span class="ico">💡</span>
+          <span><strong data-i18n="home.brain.t"></strong><small data-i18n="home.brain.d"></small></span>
+        </a>
+        <a href="#templates">
+          <span class="ico">📊</span>
+          <span><strong data-i18n="home.tpl.t"></strong><small data-i18n="home.tpl.d"></small></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Brainstorming -->
+    <section class="page" id="page-brainstorming" data-page="brainstorming" hidden>
+      <div style="margin-bottom:calc(var(--rh)*1.5)">
+        <h1 data-i18n="bs.h1"></h1>
+        <p class="lead" data-i18n="bs.lead"></p>
+      </div>
+      <div class="bs-grid">
+        <form class="block sel" id="idea-form">
+          <div class="block-h"><span data-i18n="bs.insert"></span><span>Ctrl + +</span></div>
+          <div class="block-b">
+            <h2 data-i18n="bs.new"></h2>
+            <div class="field"><label for="i-title" data-i18n="bs.title.l"></label>
+              <input type="text" id="i-title" required data-i18n-ph="bs.title.ph"></div>
+            <div class="field"><label for="i-cat" data-i18n="bs.cat"></label>
+              <select id="i-cat" data-cats="idea"></select></div>
+            <div class="field"><label for="i-body" data-i18n="bs.desc.l"></label>
+              <textarea id="i-body" required data-i18n-ph="bs.desc.ph"></textarea></div>
+            <button class="btn" type="submit" data-i18n="bs.send"></button>
+          </div>
+        </form>
+        <div class="ideas" id="ideas"></div>
+      </div>
+    </section>
+
+    <!-- Sablonok -->
+    <section class="page" id="page-templates" data-page="templates" hidden>
+      <div class="tpl-top">
+        <div>
+          <h1 data-i18n="tpl.h1"></h1>
+          <p class="lead" data-i18n="tpl.lead"></p>
+        </div>
+        <button class="btn" id="open-upload" type="button" data-i18n="tpl.upload"></button>
+      </div>
+      <div class="filters" role="search">
+        <input type="text" id="f-q" data-i18n-ph="tpl.search" data-i18n-aria="tpl.search">
+        <select id="f-cat" data-i18n-aria="bs.cat"></select>
+        <select id="f-img" data-i18n-aria="aria.img"><option value="" data-i18n="f.img.all"></option><option value="1" data-i18n="f.img.yes"></option><option value="0" data-i18n="f.img.no"></option></select>
+        <select id="f-desc" data-i18n-aria="aria.desc"><option value="" data-i18n="f.desc.all"></option><option value="1" data-i18n="f.desc.yes"></option><option value="0" data-i18n="f.desc.no"></option></select>
+        <select id="f-sort" data-i18n-aria="aria.sort"><option value="new" data-i18n="f.new"></option><option value="old" data-i18n="f.old"></option><option value="dl" data-i18n="f.dl"></option></select>
+      </div>
+      <div class="tpl-list" id="tpl-list"></div>
+      <div class="ad" data-i18n="ad"></div>
+    </section>
+
+    <!-- Rólunk -->
+    <section class="page" id="page-about" data-page="about" hidden>
+      <div class="block sel" style="padding: 30px;">
+        <h1 data-i18n="nav.about"></h1>
+        <p class="lead" data-i18n="about.lead"></p>
+        
+        <p data-i18n="about.p1"></p>
+        
+        <h2 data-i18n="about.h_offer"></h2>
+        <ul>
+            <li><strong data-i18n="about.li1_title"></strong> <span data-i18n="about.li1_desc"></span></li>
+            <li><strong data-i18n="about.li2_title"></strong> <span data-i18n="about.li2_desc"></span></li>
+            <li><strong data-i18n="about.li3_title"></strong> <span data-i18n="about.li3_desc"></span></li>
+        </ul>
+
+        <h2 data-i18n="about.h_mission"></h2>
+        <p data-i18n="about.p2"></p>
+      </div>
+    </section>
+
+    <!-- Adatvédelmi nyilatkozat -->
+    <section class="page" id="page-privacy" data-page="privacy" hidden>
+      <div class="block sel" style="padding: 30px;">
+        <h1 data-i18n="nav.privacy"></h1>
+        <p><strong data-i18n="privacy.effective"></strong></p>
+        
+        <h2 data-i18n="privacy.h1"></h2>
+        <p data-i18n="privacy.p1"></p>
+
+        <h2 data-i18n="privacy.h2"></h2>
+        <p data-i18n="privacy.p2"></p>
+        <ul>
+          <li data-i18n="privacy.li1"></li>
+          <li data-i18n="privacy.li2"></li>
+        </ul>
+
+        <h2 data-i18n="privacy.h3"></h2>
+        <p><span data-i18n="privacy.p3"></span> <strong>kapcsolat@ezexcel.hu</strong></p>
+      </div>
+    </section>
+
+    <!-- Kapcsolat -->
+    <section class="page" id="page-contact" data-page="contact" hidden>
+      <div class="block sel" style="padding: 30px;">
+        <h1 data-i18n="nav.contact"></h1>
+        <p class="lead" data-i18n="contact.lead"></p>
+        <ul>
+          <li><strong>E-mail:</strong> kapcsolat@ezexcel.hu</li>
+          <li><strong data-i18n="contact.operator"></strong> <span data-i18n="contact.team"></span></li>
+        </ul>
+        <p data-i18n="contact.p1"></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="tabs">
+    <div class="nav" aria-hidden="true">◀ ▶</div>
+    <a href="#home" data-page="home" data-i18n="nav.home"></a>
+    <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
+    <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
+    <a href="#about" data-page="about" data-i18n="nav.about"></a>
+    <a href="#privacy" data-page="privacy" data-i18n="nav.privacy"></a>
+    <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
+  </div>
+  <div class="status">
+    <span id="copy"></span>
+    <span class="sum" id="sum"></span>
+  </div>
+  <p class="disclaimer" data-i18n="disclaimer"></p>
+</footer>
+
+<dialog id="upload">
+  <form method="dialog" id="upload-form">
+    <div class="dlg-h"><h2 data-i18n="u.title"></h2><button class="dlg-x" value="cancel" formnovalidate data-i18n-aria="aria.close">×</button></div>
+    <div class="dlg-b">
+      <div class="field"><label for="u-name" data-i18n="u.name"></label><input type="text" id="u-name" required data-i18n-ph="u.name.ph"></div>
+      <div class="field"><label for="u-cat" data-i18n="bs.cat"></label>
+        <select id="u-cat" data-cats="tpl"></select>
+        <input type="text" id="u-newcat" data-i18n-ph="u.newcat" data-i18n-aria="u.newcat"></div>
+      <div class="field"><label for="u-desc" data-i18n="u.desc"></label><textarea id="u-desc" data-i18n-ph="u.desc.ph"></textarea></div>
+      <div class="field"><label for="u-file" data-i18n="u.file"></label><input type="file" id="u-file" accept=".xlsx, .xls" required></div>
+      <div class="field"><label for="u-img" data-i18n="u.img"></label><input type="file" id="u-img" accept="image/*"></div>
+      <p class="err" id="u-err"></p>
+    </div>
+    <div class="dlg-f">
+      <button class="btn ghost" value="cancel" formnovalidate data-i18n="u.cancel"></button>
+      <button class="btn" id="u-save" value="default" data-i18n="u.save"></button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem('ezx:'+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem('ezx:'+k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+
+/* ---------- Szótár / Dictionary ---------- */
+const I18N = {
+ hu:{
+  'aria.home':'EzExcel főoldal','aria.lang':'Nyelv','aria.nav':'Fő navigáció','aria.img':'Indexkép','aria.desc':'Leírás','aria.sort':'Rendezés','aria.close':'Bezárás',
+  'nav.home':'Főoldal','nav.brain':'Brainstorming','nav.tpl':'Sablonok','nav.about':'Rólunk','nav.privacy':'Adatvédelmi nyilatkozat','nav.contact':'Kapcsolat','book':'Munkafüzet1',
+  'home.merged':'Egyesített cellák','home.h1':'Üdvözlünk az EzExcel Közösségi Térben!',
+  'home.lead':'Az (Easy Excel) EzExcel egy egyszerű, regisztrációt nem igénylő platform, ahol Excel sablonokat oszthatunk meg, ötletelhetünk új funkciókról, és segíthetjük egymás munkáját a mindennapi táblázatkezelésben.',
+  'home.brain.t':'Brainstorming (Üzenőfal)','home.brain.d':'Írd meg a sablonötleted, vagy szólj hozzá másokéhoz.',
+  'home.tpl.t':'Sablonok','home.tpl.d':'Tölts le ellenőrzött sablonokat, vagy töltsd fel a sajátod.',
+  'bs.h1':'Sablon Ötletbörze Üzenőfal','bs.lead':'Írd meg a saját Excel sablon elképzelésed, vagy szólj hozzá mások ötleteihez!',
+  'bs.insert':'Új sor beszúrása','bs.new':'💡 Új ötlet hozzáadása','bs.title.l':'Ötlet címe','bs.title.ph':'Ötlet címe (pl. Éves céges cash-flow előrejelző)',
+  'bs.cat':'Kategória','bs.desc.l':'Leírás','bs.desc.ph':'Írd le részletesen, hogy mit tartalmazna a sablon...','bs.send':'Ötlet elküldése',
+  'row':n=>n+'. sor','support':'Támogatom','comments':'Kommentek','cmt.ph':'Írj hozzászólást...','cmt.send':'Küldés',
+  'tpl.h1':'Elérhető Excel Sablonok','tpl.lead':'Itt találod a feltöltött és ellenőrzött sablonokat, amiket letölthetsz a munkádhoz.',
+  'tpl.upload':'+ Új sablon feltöltése','tpl.search':'Keresés név alapján...','f.allcat':'Minden kategória',
+  'f.img.all':'Indexkép: Mind','f.img.yes':'Van indexkép','f.img.no':'Nincs indexkép',
+  'f.desc.all':'Leírás: Mind','f.desc.yes':'Van leírás','f.desc.no':'Nincs leírás',
+  'f.new':'Legújabb elöl','f.old':'Legrégebbi elöl','f.dl':'Legtöbb letöltés',
+  'empty.h':'Nincs a keresési feltételeknek megfelelő sablon.','empty.p1':'Próbálj meg más szűrési feltételeket megadni, vagy nézz szét a ','empty.link':'Brainstorming oldalon','empty.p2':'!',
+  'download':'Letöltés','preview':'előnézet','ad':'HIRDETÉS',
+  'u.title':'Új sablon feltöltése','u.name':'Sablon neve *','u.name.ph':'Pl. Éves költségvetés','u.newcat':'Vagy írj be új kategóriát...',
+  'u.desc':'Rövid leírás','u.desc.ph':'Írd le mire való a sablon...','u.file':'Excel fájl (.xlsx, .xls) *','u.img':'Indexkép / Előnézet (opcionális)',
+  'u.cancel':'Mégse','u.save':'Feltöltés mentése',
+  'err.name':'Add meg a sablon nevét.','err.file':'Válassz egy .xlsx vagy .xls fájlt.','err.size':'A fájl túl nagy: legfeljebb 3 MB lehet.','err.store':'Nem sikerült menteni a Google Drive-ba.',
+  'toast.cmt':'Hozzászólás elküldve','toast.idea':'Ötlet elküldve','toast.tpl':'Sablon feltöltve',
+  'st.ready':'Kész','st.count':'Darab','st.cmts':'Kommentek','st.sum':'Összeg (👍)','st.filtered':'Szűrve','st.dl':'Letöltések',
+  'copy.home':'© 2026 EzExcel. Minden jog fenntartva.','copy.brain':'© 2026 EzExcel Brainstorming. Minden jog fenntartva.',
+  'disclaimer':'Az EzExcel független közösségi oldal, nem áll kapcsolatban a Microsofttal. Az Excel a Microsoft Corporation védjegye.',
+  'ago.now':'most','ago.m':n=>n+' perce','ago.h':n=>n+' órája','ago.d':n=>n+' napja',
+  'title.home':'Főoldal','title.brain':'Brainstorming Ötletbörze','title.tpl':'Sablonok','title.about':'Rólunk','title.privacy':'Adatvédelmi nyilatkozat','title.contact':'Kapcsolat',
+
+  'about.lead':'Az EzExcel egy független közösségi platform, amelynek célja, hogy megkönnyítse a mindennapi táblázatkezelést, számolást és tervezést ingyenesen letölthető Excel sablonokkal és ötletekkel.',
+  'about.p1':'Oldalunk mindazoknak szól – legyen szó kisvállalkozásról, tanulásról vagy személyes pénzügyek kezeléséről –, akik szeretnének hatékonyabban és gyorsabban dolgozni az Excel programmal.',
+  'about.h_offer':'Mit kínálunk az ezexcel platformon?',
+  'about.li1_title':'Alap sablonok egy helyen:','about.li1_desc':'Használatra kész, letisztult és tesztelt sablonok széles választéka a mindennapi adminisztrációtól a komplex projektmenedzsmentig.',
+  'about.li2_title':'Közösségi brainstorming:','about.li2_desc':'Egyedi problémákkal vagy speciális elvárásokkal érkezel? Oszd meg velünk az ötleteidet, és találd meg a közösség segítségével a tökéletes táblázatos megoldást.',
+  'about.li3_title':'Kölcsönös segítségnyújtás:','about.li3_desc':'Az ezexcel nemcsak egy letöltési oldal, hanem egy olyan hely, ahol te magad is hozzájárulhatsz mások sikeréhez a saját sablonjaiddal és szakértelmeddel.',
+  'about.h_mission':'A mi küldetésünk',
+  'about.p2':'Szeretnénk levenni a válladról a bonyolult képletek és a monoton formázás terhét. Az ezexcel célja, hogy összekösse az embereket, teret adjon a közös ötletelésnek, és bizonyítsa: a tudásmegosztás révén minden kihívásra létezik egy elegáns Excel-megoldás.',
+
+  'privacy.effective':'Hatályos: 2026. évtől',
+  'privacy.h1':'1. Bevezetés',
+  'privacy.p1':'Az EzExcel weboldal üzemeltetője magára nézve kötelezőnek ismeri el jelen jogi nyilatkozat tartalmát. Biztosítjuk látogatóinkat, hogy adatkezelésünk mindenben megfelel a hatályos hazai és uniós jogszabályoknak.',
+  'privacy.h2':'2. Cookie-k (Sütik) és Google AdSense Hirdetések',
+  'privacy.p2':'Oldalunk a Google AdSense rendszert használja hirdetések megjelenítésére. A Google, mint külső szolgáltató, cookie-kat (sütiket) használ hirdetések megjelenítésére az Ön webhelyén.',
+  'privacy.li1':'A Google DART cookie használata lehetővé teszi, hogy a felhasználók számára az EzExcel-helyen és az interneten található egyéb webhelyekkel kapcsolatos látogatásaik alapján jelenítsen meg célzott hirdetéseket.',
+  'privacy.li2':'A felhasználók kikapcsolhatják a DART cookie használatát a Google hirdetésekre és tartalmakra vonatkozó adatvédelmi irányelveinek felkeresésével.',
+  'privacy.h3':'3. Kapcsolat',
+  'privacy.p3':'Ha kérdése van az adatvédelemmel kapcsolatban, kérjük, vegye fel velünk a kapcsolatot az alábbi e-mail címen:',
+
+  'contact.lead':'Örömmel vesszük észrevételeit, ötleteit vagy kérdéseit! Lépjen velünk kapcsolatba az alábbi elérhetőségek egyikén:',
+  'contact.operator':'Üzemeltető:','contact.team':'EzExcel Csapat',
+  'contact.p1':'Ha hibát talált az oldalon, vagy sablont szeretne beküldeni, kérjük, írjon nekünk bizalommal.',
+
+  'fx.home':'<span class="fn">=ÜDVÖZLÉS</span>(<span class="str">"EzExcel Közösségi Tér"</span>)',
+  'fx.brain':'<span class="fn">=DARABTELI</span>(Ötletek!A:A; <span class="str">"*"</span>)',
+  'fx.tpl':'<span class="fn">=SZŰRŐ</span>(Sablonok!A:F; Sablonok!B:B=<span class="str">"ellenőrzött"</span>)',
+  'fx.about':'<span class="fn">=INFORMÁCIÓ</span>(<span class="str">"Rólunk"</span>)',
+  'fx.privacy':'<span class="fn">=BIZTONSÁG</span>(<span class="str">"Adatvédelem"</span>)',
+  'fx.contact':'<span class="fn">=KAPCSOLAT</span>(<span class="str">"Üzenet"</span>)'
+ },
+ en:{
+  'aria.home':'EzExcel home','aria.lang':'Language','aria.nav':'Main navigation','aria.img':'Thumbnail','aria.desc':'Description','aria.sort':'Sort','aria.close':'Close',
+  'nav.home':'Home','nav.brain':'Brainstorming','nav.tpl':'Templates','nav.about':'About','nav.privacy':'Privacy Policy','nav.contact':'Contact','book':'Workbook1',
+  'home.merged':'Merged cells','home.h1':'Welcome to the EzExcel Community Space!',
+  'home.lead':'(Easy Excel) EzExcel is a simple, no-sign-up platform where we share Excel templates, brainstorm new features, and help each other with everyday spreadsheet work.',
+  'home.brain.t':'Brainstorming (Message board)','home.brain.d':'Post your template idea, or comment on others’.',
+  'home.tpl.t':'Templates','home.tpl.d':'Download verified templates, or upload your own.',
+  'bs.h1':'Template Idea Board','bs.lead':'Share your own Excel template idea, or join the discussion on others’ ideas!',
+  'bs.insert':'Insert new row','bs.new':'💡 Add a new idea','bs.title.l':'Idea title','bs.title.ph':'Idea title (e.g. Annual company cash-flow forecast)',
+  'bs.cat':'Category','bs.desc.l':'Description','bs.desc.ph':'Describe in detail what the template would include...','bs.send':'Submit idea',
+  'row':n=>'Row '+n,'support':'Support','comments':'Comments','cmt.ph':'Write a comment...','cmt.send':'Send',
+  'tpl.h1':'Available Excel Templates','tpl.lead':'Here you’ll find uploaded and verified templates you can download for your work.',
+  'tpl.upload':'+ Upload new template','tpl.search':'Search by name...','f.allcat':'All categories',
+  'f.img.all':'Thumbnail: All','f.img.yes':'Has thumbnail','f.img.no':'No thumbnail',
+  'f.desc.all':'Description: All','f.desc.yes':'Has description','f.desc.no':'No description',
+  'f.new':'Newest first','f.old':'Oldest first','f.dl':'Most downloaded',
+  'empty.h':'No templates match your search.','empty.p1':'Try different filters, or have a look at the ','empty.link':'Brainstorming page','empty.p2':'!',
+  'download':'Download','preview':'preview','ad':'ADVERTISEMENT',
+  'u.title':'Upload new template','u.name':'Template name *','u.name.ph':'E.g. Annual budget','u.newcat':'Or type a new category...',
+  'u.desc':'Short description','u.desc.ph':'Describe what the template is for...','u.file':'Excel file (.xlsx, .xls) *','u.img':'Thumbnail / Preview (optional)',
+  'u.cancel':'Cancel','u.save':'Save upload',
+  'err.name':'Enter a template name.','err.file':'Choose an .xlsx or .xls file.','err.size':'The file is too large: 3 MB maximum.','err.store':'Could not save to Google Drive.',
+  'toast.cmt':'Comment sent','toast.idea':'Idea submitted','toast.tpl':'Template uploaded',
+  'st.ready':'Ready','st.count':'Count','st.cmts':'Comments','st.sum':'Sum (👍)','st.filtered':'Filtered','st.dl':'Downloads',
+  'copy.home':'© 2026 EzExcel. All rights reserved.','copy.brain':'© 2026 EzExcel Brainstorming. All rights reserved.',
+  'disclaimer':'EzExcel is an independent community site and is not affiliated with Microsoft. Excel is a trademark of Microsoft Corporation.',
+  'ago.now':'just now','ago.m':n=>n+' min ago','ago.h':n=>n+(n===1?' hour ago':' hours ago'),'ago.d':n=>n+(n===1?' day ago':' days ago'),
+  'title.home':'Home','title.brain':'Brainstorming Idea Board','title.tpl':'Templates','title.about':'About Us','title.privacy':'Privacy Policy','title.contact':'Contact',
+
+  'about.lead':'EzExcel is an independent community platform designed to make everyday spreadsheet management, calculation, and planning easier with free downloadable Excel templates and ideas.',
+  'about.p1':'Our site is for anyone—whether it is for small business, learning, or personal finance management—who wants to work smarter and faster with Excel.',
+  'about.h_offer':'What we offer on the ezexcel platform:',
+  'about.li1_title':'Templates in one place:','about.li1_desc':'A wide selection of ready-to-use, clean, and tested templates from daily administration to complex project management.',
+  'about.li2_title':'Community brainstorming:','about.li2_desc':'Arriving with unique problems or special expectations? Share your ideas and find the perfect spreadsheet solution with the community\'s help.',
+  'about.li3_title':'Mutual support:','about.li3_desc':'EzExcel is not just a download site, but a place where you can contribute to others\' success with your own templates and expertise.',
+  'about.h_mission':'Our Mission',
+  'about.p2':'We want to take the burden of complex formulas and monotonous formatting off your shoulders. EzExcel aims to connect people, give space to community brainstorming, and prove that through knowledge sharing, there is an elegant Excel solution for every challenge.',
+
+  'privacy.effective':'Effective from: 2026',
+  'privacy.h1':'1. Introduction',
+  'privacy.p1':'The operator of the EzExcel website acknowledges the contents of this legal notice as binding. We assure our visitors that our data processing fully complies with current domestic and EU legislation.',
+  'privacy.h2':'2. Cookies and Google Adsense Ads',
+  'privacy.p2':'Our site uses the Google AdSense system to display advertisements. Google, as a third-party vendor, uses cookies to serve ads on your site.',
+  'privacy.li1':'The use of the Google DART cookie enables it to serve targeted ads to users based on their visits to EzExcel and other sites on the Internet.',
+  'privacy.li2':'Users may opt out of the use of the DART cookie by visiting the Google ad and content privacy policy.',
+  'privacy.h3':'3. Contact',
+  'privacy.p3':'If you have any questions regarding data protection, please contact us at the following email address:',
+
+  'contact.lead':'We welcome your comments, ideas or questions! Get in touch with us using one of the contacts below:',
+  'contact.operator':'Operator:','contact.team':'EzExcel Team',
+  'contact.p1':'If you found a bug on the site or would like to submit a template, please feel free to write to us.',
+
+  'fx.home':'<span class="fn">=WELCOME</span>(<span class="str">"EzExcel Community Space"</span>)',
+  'fx.brain':'<span class="fn">=COUNTIF</span>(Ideas!A:A, <span class="str">"*"</span>)',
+  'fx.tpl':'<span class="fn">=FILTER</span>(Templates!A:F, Templates!B:B=<span class="str">"verified"</span>)',
+  'fx.about':'<span class="fn">=INFO</span>(<span class="str">"About"</span>)',
+  'fx.privacy':'<span class="fn">=SECURITY</span>(<span class="str">"Privacy"</span>)',
+  'fx.contact':'<span class="fn">=CONTACT</span>(<span class="str">"Message"</span>)'
+ }
+};
+const CATS = {
+  'Pénzügy & Budget':'Finance & Budget','Projektmenedzsment':'Project management','HR & Bérszámfejtés':'HR & Payroll',
+  'Értékesítés & CRM':'Sales & CRM','Oktatás & Tanulás':'Education & Learning','Egyéb ötlet':'Other idea',
+  'Pénzügy':'Finance','HR & Admin':'HR & Admin','Egyéb':'Other'
+};
+const IDEA_CATS = ['Pénzügy & Budget','Projektmenedzsment','HR & Bérszámfejtés','Értékesítés & CRM','Oktatás & Tanulás','Egyéb ötlet'];
+const TPL_CATS = ['Pénzügy','Projektmenedzsment','HR & Admin','Egyéb'];
+
+let lang = store.get('lang', null) || ((navigator.language||'hu').toLowerCase().startsWith('hu') ? 'hu' : 'en');
+const t = (k, ...a) => { const v = I18N[lang][k] ?? I18N.hu[k] ?? k; return typeof v === 'function' ? v(...a) : v; };
+const cat = c => lang==='en' ? (CATS[c] || c) : c;
+const tx = v => (v && typeof v === 'object') ? (v[lang] || v.hu) : v;
+
+function ago(ts){
+  const m = Math.round((Date.now()-ts)/60000);
+  if (m < 1) return t('ago.now');
+  if (m < 60) return t('ago.m', m);
+  const h = Math.round(m/60); if (h < 24) return t('ago.h', h);
+  return t('ago.d', Math.round(h/24));
+}
+function toast(msg){ const el=$('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),2200); }
+
+function fillCatSelect(sel, list){
+  const cur = sel.value;
+  sel.innerHTML = list.map(c=>`<option value="${esc(c)}">${esc(cat(c))}</option>`).join('');
+  if (list.includes(cur)) sel.value = cur;
+}
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.i18nAria)));
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang===lang));
+  fillCatSelect($('#i-cat'), IDEA_CATS);
+  fillCatSelect($('#u-cat'), TPL_CATS);
+  renderIdeas(); renderCats(); renderTpls(); route();
+}
+document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', ()=>{ if(intro.cancel) intro.cancel(); lang = b.dataset.lang; store.set('lang', lang); applyLang(); }));
+
+let me = store.get('me', null);
+if (!me){
+  const a=['Kreatív','Pontos','Gyors','Okos','Precíz','Lelkes','Rendszerező','Ügyes'];
+  const b=['Elemző','Kalkulátor','Tervező','Könyvelő','Szervező','Táblázatmester','Adatguru'];
+  me = a[Math.random()*a.length|0]+' '+b[Math.random()*b.length|0]+' #'+(100+Math.random()*900|0);
+  store.set('me', me);
+}
+
+/* Grid chrome */
+const cols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat('AA AB AC AD AE AF'.split(' '));
+$('#colhead').innerHTML = cols.map(c=>`<span>${c}</span>`).join('');
+let rows=''; for(let i=1;i<=400;i++) rows+=`<span>${i}</span>`; $('#rowhead').innerHTML = rows;
+const cells = $('#cells');
+cells.addEventListener('scroll', ()=>{ $('#colhead').scrollLeft = cells.scrollLeft; $('#rowhead').scrollTop = cells.scrollTop; });
+
+/* Routing */
+const pages = {
+  home:{k:'home', ref:'A1', col:0, copy:'copy.home', nav:'nav.home'},
+  brainstorming:{k:'brain', ref:'B2', col:1, copy:'copy.brain', nav:'nav.brain'},
+  templates:{k:'tpl', ref:'C3', col:2, copy:'copy.home', nav:'nav.tpl'},
+  about:{k:'about', ref:'D4', col:3, copy:'copy.home', nav:'nav.about'},
+  privacy:{k:'privacy', ref:'E5', col:4, copy:'copy.home', nav:'nav.privacy'},
+  contact:{k:'contact', ref:'F6', col:5, copy:'copy.home', nav:'nav.contact'}
+};
+let current = null;
+function route(){
+  const p = location.hash.replace('#','') || 'home';
+  const key = pages[p] ? p : 'home', cfg = pages[key];
+  document.querySelectorAll('.page').forEach(s => s.hidden = s.dataset.page !== key);
+  document.querySelectorAll('a[data-page]').forEach(a => a.dataset.page===key ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
+  $('#namebox').textContent = cfg.ref;
+  $('#formula').innerHTML = t('fx.'+cfg.k);
+  $('#docname').textContent = t('book') + ' – ' + t(cfg.nav);
+  $('#copy').textContent = t(cfg.copy);
+  document.querySelectorAll('#colhead span').forEach((s,i)=>s.classList.toggle('on', i===cfg.col));
+  document.title = 'EzExcel - ' + t('title.'+cfg.k);
+  if (current !== key) cells.scrollTop = 0;
+  current = key;
+  updateSum(key);
+  if (key==='templates') loadTplsFromDrive();
+  if (key==='home') requestAnimationFrame(()=>requestAnimationFrame(playIntro));
+}
+window.addEventListener('hashchange', route);
+
+/* Brainstorming */
+const now = Date.now(), H = 3600e3;
+let ideas = store.get('ideas', null) || [{
+  id:'i1', author:'Kreatív Elemző #421', t: now-3*H, cat:'Pénzügy & Budget',
+  title:{hu:'Éves céges cash-flow előrejelző sablon', en:'Annual company cash-flow forecast template'},
+  body:{hu:'Jó lenne egy olyan dinamikus sablon, ami összehasonlítja a havi tervezett és tény cash-flow adatokat, és automatikusan kiszámolja az eltéréseket.',
+        en:'It would be great to have a dynamic template that compares planned and actual monthly cash-flow figures and calculates the variances automatically.'},
+  votes:5, open:false,
+  comments:[
+    {id:'c1', author:'Pontos Kalkulátor #812', t: now-2*H, body:{hu:'Ez nagyszerű ötlet! Én egy grafikonos vizualizációt is tennék bele.', en:'Great idea! I would add a chart visualisation too.'}, votes:2},
+    {id:'c2', author:'Gyors Tervező #334', t: now-1*H, body:{hu:'Egyetérttek, a pivot tábla is hasznos lenne benne.', en:'Agreed, a pivot table would be useful as well.'}, votes:1}
+  ]
+}];
+ideas.forEach(it=>{ if(it.id==='i1' && typeof it.title==='string'){ it.title={hu:it.title,en:'Annual company cash-flow forecast template'}; it.body={hu:it.body,en:'It would be great to have a dynamic template that compares planned and actual monthly cash-flow figures and calculates the variances automatically.'};
+  it.comments.forEach(c=>{ if(c.id==='c1'&&typeof c.body==='string') c.body={hu:c.body,en:'Great idea! I would add a chart visualisation too.'}; if(c.id==='c2'&&typeof c.body==='string') c.body={hu:c.body,en:'Agreed, a pivot table would be useful as well.'}; }); }});
+let voted = store.get('voted', {});
+const saveIdeas = () => { store.set('ideas', ideas); store.set('voted', voted); };
+
+function renderIdeas(){
+  $('#ideas').innerHTML = ideas.map((it, n) => `
+    <article class="block idea" data-id="${it.id}">
+      <div class="block-h"><span>${t('row', n+1)}</span><span>${esc(cat(it.cat))}</span></div>
+      <div class="block-b">
+        <div class="meta"><span>👤 ${esc(it.author)}</span><span>🕒 ${ago(it.t)}</span><span class="tag">${esc(cat(it.cat))}</span></div>
+        <h3>${esc(tx(it.title))}</h3>
+        <p>${esc(tx(it.body))}</p>
+        <div class="actions">
+          <button class="vote ${voted[it.id]?'on':''}" data-vote="${it.id}" aria-pressed="${!!voted[it.id]}">👍 ${t('support')} (${it.votes})</button>
+          <button class="cmt-toggle" data-toggle="${it.id}" aria-expanded="${!!it.open}">${t('comments')} (${it.comments.length})</button>
+        </div>
+        ${it.open ? `<div class="comments">
+          ${it.comments.map(c=>`
+            <div class="comment">
+              <div class="who">💬 ${esc(c.author)}<time>${ago(c.t)}</time></div>
+              <p>${esc(tx(c.body))}</p>
+              <button class="vote ${voted[c.id]?'on':''}" data-cvote="${it.id}:${c.id}" aria-pressed="${!!voted[c.id]}">👍 (${c.votes})</button>
+            </div>`).join('')}
+          <form class="cmt-form" data-cform="${it.id}">
+            <input type="text" placeholder="${esc(t('cmt.ph'))}" aria-label="${esc(t('cmt.ph'))}" required>
+            <button class="btn" type="submit">${t('cmt.send')}</button>
+          </form>
+        </div>` : ''}
+      </div>
+    </article>`).join('');
+}
+$('#ideas').addEventListener('click', e=>{
+  const v = e.target.closest('[data-vote]'), cv = e.target.closest('[data-cvote]'), tg = e.target.closest('[data-toggle]');
+  if (v){ const it = ideas.find(x=>x.id===v.dataset.vote); voted[it.id] = !voted[it.id]; it.votes += voted[it.id]?1:-1; }
+  else if (cv){ const [iid,cid]=cv.dataset.cvote.split(':'); const c = ideas.find(x=>x.id===iid).comments.find(x=>x.id===cid); voted[cid]=!voted[cid]; c.votes += voted[cid]?1:-1; }
+  else if (tg){ const it = ideas.find(x=>x.id===tg.dataset.toggle); it.open = !it.open; }
+  else return;
+  saveIdeas(); renderIdeas(); updateSum('brainstorming');
+});
+$('#ideas').addEventListener('submit', e=>{
+  const f = e.target.closest('[data-cform]'); if(!f) return; e.preventDefault();
+  const inp = f.querySelector('input'), txt = inp.value.trim(); if(!txt) return;
+  ideas.find(x=>x.id===f.dataset.cform).comments.push({id:'c'+Date.now(), author:me, t:Date.now(), body:txt, votes:0});
+  saveIdeas(); renderIdeas(); updateSum('brainstorming'); toast(t('toast.cmt'));
+});
+$('#idea-form').addEventListener('submit', e=>{
+  e.preventDefault();
+  const title=$('#i-title').value.trim(), body=$('#i-body').value.trim();
+  if(!title||!body) return;
+  ideas.unshift({id:'i'+Date.now(), author:me, t:Date.now(), cat:$('#i-cat').value, title, body, votes:0, open:false, comments:[]});
+  saveIdeas(); renderIdeas(); $('#i-title').value=''; $('#i-body').value=''; updateSum('brainstorming'); toast(t('toast.idea'));
+});
+
+/* ---------- Google Drive Integration & Templates ---------- */
+// A TELEPÍTETT GOOGLE APPS SCRIPT WEB APP URL-JE:
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2aqg3f541VEbie_m56gkmlrhFRl4hzPnhuibH10SVv-5AM-Y9GlOIKJw1phB6XtBU/exec";
+
+let tpls = [];
+const saveTpls = () => store.set('tpls', tpls);
+
+// Sablonok élő betöltése Google Drive-ból
+async function loadTplsFromDrive() {
+  if (!SCRIPT_URL) {
+    tpls = store.get('tpls', []);
+    renderCats();
+    renderTpls();
+    return;
+  }
+  
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      tpls = data;
+    } else {
+      tpls = store.get('tpls', []);
+    }
+  } catch (e) {
+    console.error("Hiba a Drive sablonok betöltésekor:", e);
+    tpls = store.get('tpls', []);
+  }
+  renderCats();
+  renderTpls();
+}
+
+function renderCats(){
+  const sel = $('#f-cat'), cur = sel.value;
+  const cats = [...new Set(tpls.map(x=>x.cat))].sort((a,b)=>cat(a).localeCompare(cat(b), lang));
+  sel.innerHTML = `<option value="">${esc(t('f.allcat'))}</option>` + cats.map(c=>`<option value="${esc(c)}">${esc(cat(c))}</option>`).join('');
+  sel.value = cats.includes(cur) ? cur : '';
+}
+
+function renderTpls(){
+  const q=$('#f-q').value.trim().toLowerCase(), fc=$('#f-cat').value, img=$('#f-img').value, desc=$('#f-desc').value, sort=$('#f-sort').value;
+  let list = tpls.filter(x =>
+    (!q || x.name.toLowerCase().includes(q)) && (!fc || x.cat===fc) &&
+    (img==='' || (!!x.img)===(img==='1')) && (desc==='' || (!!x.desc)===(desc==='1')));
+  list.sort((a,b)=> sort==='old' ? a.t-b.t : sort==='dl' ? b.dl-a.dl : b.t-a.t);
+  if (!list.length){
+    $('#tpl-list').innerHTML = `<div class="block empty" style="grid-column:1/-1">
+      <div class="big">#N/A</div>
+      <h3>${t('empty.h')}</h3>
+      <p>${t('empty.p1')}<a href="#brainstorming">${t('empty.link')}</a>${t('empty.p2')}</p></div>`;
+  } else {
+    $('#tpl-list').innerHTML = list.map(x=>`
+      <article class="block tpl">
+        <div class="thumb">${x.img ? `<img src="${x.img}" alt="${esc(x.name)}${t('preview')}">` : esc(x.fileName)}</div>
+        <div class="block-b">
+          <span class="tag">${esc(cat(x.cat))}</span>
+          <h3>${esc(x.name)}</h3>
+          ${x.desc ? `<p>${esc(x.desc)}</p>` : ''}
+          <div class="actions">
+            <!-- KÖZVETLEN LETÖLTÉSI LINK A DRIVE-BÓL -->
+            <a class="btn" href="${x.file}" download="${esc(x.fileName)}" data-dl="${x.id}" style="text-decoration:none">${t('download')}</a>
+            <span class="meta">⬇ ${x.dl} · ${ago(x.t)}</span>
+          </div>
+        </div>
+      </article>`).join('');
+  }
+  updateSum('templates', list.length);
+}
+
+['#f-q','#f-cat','#f-img','#f-desc','#f-sort'].forEach(s=>$(s).addEventListener('input', renderTpls));
+
+// Letöltésszámláló
+$('#tpl-list').addEventListener('click', e=>{
+  const a = e.target.closest('[data-dl]'); if(!a) return;
+  const x = tpls.find(y=>y.id===a.dataset.dl);
+  if (x) {
+    x.dl++;
+    if (SCRIPT_URL) {
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'incrementDownload', id: x.id })
+      }).catch(()=>{});
+    } else {
+      saveTpls();
+    }
+    setTimeout(renderTpls, 50);
+  }
+});
+
+// Új sablon feltöltése a Google Drive-ba
+const dlg = $('#upload');
+$('#open-upload').addEventListener('click', ()=>{ $('#u-err').textContent=''; dlg.showModal(); });
+const readAs = f => new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); });
+
+$('#upload-form').addEventListener('submit', async e=>{
+  if (e.submitter && e.submitter.value==='cancel') return;
+  e.preventDefault();
+  const name=$('#u-name').value.trim(), file=$('#u-file').files[0], imgF=$('#u-img').files[0];
+  if(!name){ $('#u-err').textContent=t('err.name'); return; }
+  if(!file || !/\.xlsx?$/i.test(file.name)){ $('#u-err').textContent=t('err.file'); return; }
+  if(file.size > 3e6){ $('#u-err').textContent=t('err.size'); return; }
+
+  const saveBtn = $('#u-save');
+  saveBtn.disabled = true;
+  const origText = saveBtn.textContent;
+  saveBtn.textContent = 'Feltöltés...';
+
+  try {
+    const fileBase64 = await readAs(file);
+    const imgBase64 = imgF ? await readAs(imgF) : '';
+    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
+    const description = $('#u-desc').value.trim();
+
+    if (SCRIPT_URL) {
+      const payload = {
+        name: name,
+        cat: category,
+        desc: description,
+        fileName: file.name,
+        fileData: fileBase64,
+        imgData: imgBase64
+      };
+
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.status === 'error') {
+        throw new Error(result.message);
+      }
+      await loadTplsFromDrive();
+    } else {
+      const x = { id:'t'+Date.now(), name, cat: category, desc: description,
+        file: fileBase64, fileName:file.name, img: imgBase64, t:Date.now(), dl:0 };
+      tpls.unshift(x);
+      saveTpls();
+      renderCats();
+      renderTpls();
+    }
+
+    e.target.reset();
+    dlg.close();
+    toast(t('toast.tpl'));
+  } catch(err) {
+    $('#u-err').textContent = 'Hiba a feltöltés során: ' + err.message;
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = origText;
+  }
+});
+
+/* Status bar */
+function updateSum(key, shown){
+  const s = $('#sum');
+  if (key !== current) return;
+  if (key==='brainstorming'){
+    const v = ideas.reduce((a,b)=>a+b.votes,0), c = ideas.reduce((a,b)=>a+b.comments.length,0);
+    s.innerHTML = `<span>${t('st.count')}: ${ideas.length}</span><span>${t('st.cmts')}: ${c}</span><span>${t('st.sum')}: ${v}</span>`;
+  } else if (key==='templates'){
+    const n = shown ?? document.querySelectorAll('#tpl-list .tpl').length;
+    s.innerHTML = `<span>${t('st.filtered')}: ${n} / ${tpls.length}</span><span>${t('st.dl')}: ${tpls.reduce((a,b)=>a+b.dl,0)}</span>`;
+  } else s.innerHTML = `<span>${t('st.ready')}</span>`;
+}
+
+/* Intro animation */
+const intro = {done:false, running:false, cancel:null};
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const colName = i => cols[i] || ('C'+(i+1));
+const cssPx = v => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(v));
+function highlightCols(a,b){ document.querySelectorAll('#colhead span').forEach((s,i)=>s.classList.toggle('on', i>=a && i<=b)); }
+function heroGeom(){
+  const hero=$('.hero'), cr=cells.getBoundingClientRect(), r=hero.getBoundingClientRect(), cw=cssPx('--cw'), rh=cssPx('--rh');
+  const x=r.left-cr.left+cells.scrollLeft, y=r.top-cr.top+cells.scrollTop;
+  return {x,y,w:r.width,h:r.height,cw,rh,c0:Math.floor(x/cw),r0:Math.floor(y/rh),c1:Math.floor((x+r.width-1)/cw),r1:Math.floor((y+r.height-1)/rh)};
+}
+const rangeLabel = g => colName(g.c0)+(g.r0+1)+':'+colName(g.c1)+(g.r1+1);
+const CURSOR = '<svg viewBox="0 0 26 26"><path d="M9 1h8v8h8v8h-8v8H9v-8H1V9h8z" fill="#fff" stroke="#1F2A22" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+
+async function playIntro(){
+  if (intro.done || intro.running || current!=='home') return;
+  intro.running = true;
+  try{ await Promise.race([document.fonts ? document.fonts.ready : null, sleep(1200)]); }catch(e){}
+  if (current!=='home'){ intro.running=false; return; }
+  const page=$('#page-home'), hero=$('.hero'), h1=$('#page-home h1 [data-i18n]');
+  const g = heroGeom(); $('#hero-range').textContent = rangeLabel(g);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ intro.running=false; intro.done=true; return; }
+
+  let stop=false;
+  const sel=document.createElement('div'); sel.className='drag-sel';
+  const cur=document.createElement('div'); cur.className='xcursor'; cur.innerHTML=CURSOR;
+  cells.append(sel,cur);
+  page.classList.add('intro');
+  hero.style.minHeight = g.h+'px';
+
+  const finish = () => {
+    if (stop) return; stop=true;
+    sel.remove(); cur.remove(); hero.style.minHeight='';
+    page.classList.remove('intro','typing');
+    h1.textContent = t('home.h1');
+    if (current==='home'){ $('#formula').innerHTML = t('fx.home'); $('#namebox').textContent='A1'; highlightCols(0,0); }
+    document.removeEventListener('pointerdown', finish, true);
+    document.removeEventListener('keydown', finish, true);
+    intro.running=false; intro.done=true; intro.cancel=null;
+  };
+  intro.cancel = finish;
+  document.addEventListener('pointerdown', finish, true);
+  document.addEventListener('keydown', finish, true);
+
+  const {x,y,w,h,cw,rh} = g, sx=g.c0*cw, sy=g.r0*rh;
+  const place = (el,px,py) => el.style.transform = `translate(${px}px,${py}px)`;
+  const ox=sx+cw*.45, oy=sy+rh*.5, ex=x+w-cw*.45, ey=y+h-rh*.5;
+
+  place(cur, ox+cw*1.8, oy-rh*1.6);
+  await sleep(300); if(stop) return;
+  cur.style.transition='transform .5s cubic-bezier(.25,.8,.35,1), opacity .25s';
+  cur.style.opacity=1; place(cur, ox, oy);
+  await sleep(560); if(stop) return;
+
+  cur.classList.add('down'); cur.style.transition='opacity .25s';
+  Object.assign(sel.style,{left:sx+'px',top:sy+'px',width:cw+'px',height:rh+'px',opacity:1});
+  $('#namebox').textContent = colName(g.c0)+(g.r0+1); highlightCols(g.c0,g.c0);
+  await sleep(140); if(stop) return;
+
+  const D=1150, t0=performance.now();
+  await new Promise(res=>{
+    const frame = now => {
+      if (stop) return res();
+      const p=Math.min(1,(now-t0)/D), e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+      const px=ox+(ex-ox)*e, py=oy+(ey-oy)*e; place(cur,px,py);
+      const c1=Math.max(g.c0,Math.floor(px/cw)), r1=Math.max(g.r0,Math.floor(py/rh));
+      sel.style.width=(c1-g.c0+1)*cw+'px'; sel.style.height=(r1-g.r0+1)*rh+'px';
+      const R=r1-g.r0+1, C=c1-g.c0+1;
+      $('#namebox').textContent = lang==='hu' ? `${R}S × ${C}O` : `${R}R × ${C}C`;
+      highlightCols(g.c0,c1);
+      p<1 ? requestAnimationFrame(frame) : res();
+    };
+    requestAnimationFrame(frame);
+  });
+  if(stop) return;
+
+  cur.classList.remove('down'); cur.style.opacity=0;
+  $('#namebox').textContent = rangeLabel(g);
+  sel.style.transition='left .22s ease-out, top .22s ease-out, width .22s ease-out, height .22s ease-out';
+  Object.assign(sel.style,{left:x+'px',top:y+'px',width:w+'px',height:h+'px'});
+  await sleep(260); if(stop) return;
+  sel.remove();
+
+  const full=t('home.h1');
+  h1.textContent=''; $('#formula').textContent=''; page.classList.add('typing');
+  await sleep(220);
+  for (let i=1;i<=full.length;i++){
+    if(stop) return;
+    h1.textContent=full.slice(0,i); $('#formula').textContent=full.slice(0,i);
+    await sleep(full[i-1]===' ' ? 55 : 24+Math.random()*26);
+  }
+  await sleep(450); if(stop) return;
+
+  finish();
+}
+
+applyLang();
+loadTplsFromDrive();
+})();
+</script>
+</body>
+</html>
