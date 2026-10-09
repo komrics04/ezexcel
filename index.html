@@ -107,7 +107,7 @@ input[type=text],select,textarea{width:100%;background:var(--paper);border:1px s
 input[type=text]:focus,select:focus,textarea:focus{outline:none;border:2px solid var(--green-sel);padding:7px 9px}
 textarea{min-height:96px;resize:vertical}
 input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:100%;background:var(--canvas)}
-.btn{background:var(--green);color:#fff;border:0;border-radius:3px;padding:9px 18px;font-weight:600;cursor:pointer;min-height:38px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+.btn{background:var(--green);color:#fff;border:0;border-radius:3px;padding:9px 18px;font-weight:600;cursor:pointer;min-height:38px}
 .btn:hover{background:var(--green-dk)}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .btn.ghost{background:transparent;color:var(--green);border:1px solid var(--line)}
@@ -134,7 +134,8 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .cmt-form{display:flex;gap:8px}
 .cmt-form input{flex:1}
 
-/* Templates list & Card fixes */
+/* Templates */
+/* Templates */
 .tpl-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:var(--rh)}
 .filters{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:0;margin-bottom:var(--rh);border:1px solid var(--line);background:var(--paper)}
 .filters > *{border:0;border-right:1px solid var(--line);border-radius:0}
@@ -142,7 +143,7 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .filters input,.filters select{min-height:40px}
 @media (max-width:860px){.filters{grid-template-columns:1fr 1fr}.filters > *{border-bottom:1px solid var(--line)}.filters input{grid-column:1/-1}}
 
-/* Egységes kártyaméretek az összeállításban */
+/* Egységes kártyaméretek a rácsban (360px fix magasság) */
 .tpl-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));grid-auto-rows:360px;gap:var(--rh)}
 .tpl{display:flex;flex-direction:column;height:100%;cursor:pointer;transition:transform 0.15s, border-color 0.15s}
 .tpl:hover{border-color:var(--green-sel);transform:translateY(-2px)}
@@ -151,6 +152,7 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .tpl .thumb img{width:100%;height:100%;object-fit:cover}
 .tpl .block-b{padding:14px 16px;display:flex;flex-direction:column;flex:1;overflow:hidden}
 .tpl h3{margin:4px 0 6px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 /* Pontosan az első 4 sor látszódjon a leírásból */
 .tpl p.tpl-desc{
   margin:0 0 12px;
@@ -166,7 +168,7 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 }
 .tpl .actions{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--grid)}
 
-/* Detail / Profile page for template */
+/* Detail / Profile oldal a sablonokhoz */
 .tpl-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:calc(var(--rh)*1.5);align-items:start}
 @media (max-width:860px){.tpl-detail-grid{grid-template-columns:1fr}}
 .tpl-detail-hero{background:var(--canvas);border:1px solid var(--line);border-radius:4px;overflow:hidden;max-height:420px;display:flex;justify-content:center;align-items:center}
@@ -319,14 +321,6 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
       <div class="ad" data-i18n="ad"></div>
     </section>
 
-    <!-- Sablon Részletező / Profil oldal -->
-    <section class="page" id="page-template-detail" data-page="template-detail" hidden>
-      <div style="margin-bottom:16px;">
-        <a href="#templates" class="btn ghost" style="padding:4px 12px; font-size:13px;">← <span data-i18n="tpl.back">Vissza a sablonokhoz</span></a>
-      </div>
-      <div id="tpl-detail-content"></div>
-    </section>
-
     <!-- Rólunk -->
     <section class="page" id="page-about" data-page="about" hidden>
       <div class="block sel" style="padding: 30px;">
@@ -450,17 +444,13 @@ const I18N = {
   'f.img.all':'Indexkép: Mind','f.img.yes':'Van indexkép','f.img.no':'Nincs indexkép',
   'f.desc.all':'Leírás: Mind','f.desc.yes':'Van leírás','f.desc.no':'Nincs leírás',
   'f.new':'Legújabb elöl','f.old':'Legrégebbi elöl','f.dl':'Legtöbb letöltés',
-  'tpl.back':'Vissza a sablonokhoz',
-  'tpl.reviews':'Vélemények és értékelések',
-  'tpl.add_review':'Vélemény írása',
-  'tpl.no_reviews':'Még nem érkezett értékelés erre a sablonra.',
   'empty.h':'Nincs a keresési feltételeknek megfelelő sablon.','empty.p1':'Próbálj meg más szűrési feltételeket megadni, vagy nézz szét a ','empty.link':'Brainstorming oldalon','empty.p2':'!',
   'download':'Letöltés','preview':'előnézet','ad':'HIRDETÉS',
   'u.title':'Új sablon feltöltése','u.name':'Sablon neve *','u.name.ph':'Pl. Éves költségvetés','u.newcat':'Vagy írj be új kategóriát...',
   'u.desc':'Rövid leírás','u.desc.ph':'Írd le mire való a sablon...','u.file':'Excel fájl (.xlsx, .xls) *','u.img':'Indexkép / Előnézet (opcionális)',
   'u.cancel':'Mégse','u.save':'Feltöltés mentése',
   'err.name':'Add meg a sablon nevét.','err.file':'Válassz egy .xlsx vagy .xls fájlt.','err.size':'A fájl túl nagy: legfeljebb 3 MB lehet.','err.store':'Nem sikerült menteni a Google Drive-ba.',
-  'toast.cmt':'Hozzászólás elküldve','toast.idea':'Ötlet elküldve','toast.tpl':'Sablon feltöltve','toast.rev':'Értékelés hozzáadva',
+  'toast.cmt':'Hozzászólás elküldve','toast.idea':'Ötlet elküldve','toast.tpl':'Sablon feltöltve',
   'st.ready':'Kész','st.count':'Darab','st.cmts':'Kommentek','st.sum':'Összeg (👍)','st.filtered':'Szűrve','st.dl':'Letöltések',
   'copy.home':'© 2026 EzExcel. Minden jog fenntartva.','copy.brain':'© 2026 EzExcel Brainstorming. Minden jog fenntartva.',
   'disclaimer':'Az EzExcel független közösségi oldal, nem áll kapcsolatban a Microsofttal. Az Excel a Microsoft Corporation védjegye.',
@@ -513,17 +503,13 @@ const I18N = {
   'f.img.all':'Thumbnail: All','f.img.yes':'Has thumbnail','f.img.no':'No thumbnail',
   'f.desc.all':'Description: All','f.desc.yes':'Has description','f.desc.no':'No description',
   'f.new':'Newest first','f.old':'Oldest first','f.dl':'Most downloaded',
-  'tpl.back':'Back to templates',
-  'tpl.reviews':'Reviews and Ratings',
-  'tpl.add_review':'Write a review',
-  'tpl.no_reviews':'No reviews for this template yet.',
   'empty.h':'No templates match your search.','empty.p1':'Try different filters, or have a look at the ','empty.link':'Brainstorming page','empty.p2':'!',
   'download':'Download','preview':'preview','ad':'ADVERTISEMENT',
   'u.title':'Upload new template','u.name':'Template name *','u.name.ph':'E.g. Annual budget','u.newcat':'Or type a new category...',
   'u.desc':'Short description','u.desc.ph':'Describe what the template is for...','u.file':'Excel file (.xlsx, .xls) *','u.img':'Thumbnail / Preview (optional)',
   'u.cancel':'Cancel','u.save':'Save upload',
   'err.name':'Enter a template name.','err.file':'Choose an .xlsx or .xls file.','err.size':'The file is too large: 3 MB maximum.','err.store':'Could not save to Google Drive.',
-  'toast.cmt':'Comment sent','toast.idea':'Idea submitted','toast.tpl':'Template uploaded','toast.rev':'Review submitted',
+  'toast.cmt':'Comment sent','toast.idea':'Idea submitted','toast.tpl':'Template uploaded',
   'st.ready':'Ready','st.count':'Count','st.cmts':'Comments','st.sum':'Sum (👍)','st.filtered':'Filtered','st.dl':'Downloads',
   'copy.home':'© 2026 EzExcel. All rights reserved.','copy.brain':'© 2026 EzExcel Brainstorming. All rights reserved.',
   'disclaimer':'EzExcel is an independent community site and is not affiliated with Microsoft. Excel is a trademark of Microsoft Corporation.',
@@ -620,27 +606,16 @@ const pages = {
   home:{k:'home', ref:'A1', col:0, copy:'copy.home', nav:'nav.home'},
   brainstorming:{k:'brain', ref:'B2', col:1, copy:'copy.brain', nav:'nav.brain'},
   templates:{k:'tpl', ref:'C3', col:2, copy:'copy.home', nav:'nav.tpl'},
-  'template-detail':{k:'tpl', ref:'C3', col:2, copy:'copy.home', nav:'nav.tpl'},
   about:{k:'about', ref:'D4', col:3, copy:'copy.home', nav:'nav.about'},
   privacy:{k:'privacy', ref:'E5', col:4, copy:'copy.home', nav:'nav.privacy'},
   contact:{k:'contact', ref:'F6', col:5, copy:'copy.home', nav:'nav.contact'}
 };
 let current = null;
 function route(){
-  const hash = location.hash.replace('#','');
-  let key = 'home';
-  let subId = null;
-
-  if (hash.startsWith('template/')){
-    key = 'template-detail';
-    subId = hash.replace('template/', '');
-  } else if (pages[hash]) {
-    key = hash;
-  }
-
-  const cfg = pages[key];
+  const p = location.hash.replace('#','') || 'home';
+  const key = pages[p] ? p : 'home', cfg = pages[key];
   document.querySelectorAll('.page').forEach(s => s.hidden = s.dataset.page !== key);
-  document.querySelectorAll('a[data-page]').forEach(a => (a.dataset.page===key || (key==='template-detail' && a.dataset.page==='templates')) ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
+  document.querySelectorAll('a[data-page]').forEach(a => a.dataset.page===key ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
   $('#namebox').textContent = cfg.ref;
   $('#formula').innerHTML = t('fx.'+cfg.k);
   $('#docname').textContent = t('book') + ' – ' + t(cfg.nav);
@@ -650,9 +625,7 @@ function route(){
   if (current !== key) cells.scrollTop = 0;
   current = key;
   updateSum(key);
-  
   if (key==='templates') loadTplsFromDrive();
-  if (key==='template-detail' && subId) renderTplDetail(subId);
   if (key==='home') requestAnimationFrame(()=>requestAnimationFrame(playIntro));
 }
 window.addEventListener('hashchange', route);
@@ -725,28 +698,16 @@ $('#idea-form').addEventListener('submit', e=>{
 });
 
 /* ---------- Google Drive Integration & Templates ---------- */
+// A TELEPÍTETT GOOGLE APPS SCRIPT WEB APP URL-JE:
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2aqg3f541VEbie_m56gkmlrhFRl4hzPnhuibH10SVv-5AM-Y9GlOIKJw1phB6XtBU/exec";
 
-let tpls = store.get('tpls', null) || [
-  {
-    id: 't_demo1',
-    name: 'Komplex Céges Büdzsé Sablon 2026',
-    cat: 'Pénzügy',
-    desc: 'Ez a professzionális sablon tartalmazza a teljes éves pénzügyi tervezést, költségsoronkénti bontásban. Automatikus vizualizációs diagramokkal és előre beállított P&L kimutatással rendelkezik. Könnyedén testreszabható kis- és középvállalkozások számára.',
-    fileName: 'ceges_budzse_2026.xlsx',
-    file: '#',
-    img: '',
-    t: Date.now() - 86400000 * 5,
-    dl: 42,
-    reviews: [
-      { id: 'r1', author: 'Lelkes Könyvelő #102', rating: 5, body: 'Szuperül strukturált táblázat, rengeteg időt spórolt meg nekem!', t: Date.now() - 86400000 * 2 }
-    ]
-  }
-];
+let tpls = [];
 const saveTpls = () => store.set('tpls', tpls);
 
+// Sablonok élő betöltése Google Drive-ból
 async function loadTplsFromDrive() {
   if (!SCRIPT_URL) {
+    tpls = store.get('tpls', []);
     renderCats();
     renderTpls();
     return;
@@ -756,14 +717,13 @@ async function loadTplsFromDrive() {
     const res = await fetch(SCRIPT_URL);
     const data = await res.json();
     if (Array.isArray(data)) {
-      // Megőrizzük a helyi véleményeket
-      tpls = data.map(item => {
-        const old = tpls.find(x => x.id === item.id);
-        return { ...item, reviews: old ? (old.reviews || []) : (item.reviews || []) };
-      });
+      tpls = data;
+    } else {
+      tpls = store.get('tpls', []);
     }
   } catch (e) {
     console.error("Hiba a Drive sablonok betöltésekor:", e);
+    tpls = store.get('tpls', []);
   }
   renderCats();
   renderTpls();
@@ -789,15 +749,16 @@ function renderTpls(){
       <p>${t('empty.p1')}<a href="#brainstorming">${t('empty.link')}</a>${t('empty.p2')}</p></div>`;
   } else {
     $('#tpl-list').innerHTML = list.map(x=>`
-      <article class="block tpl" onclick="if(!event.target.closest('a')) location.hash='template/${x.id}'">
+      <article class="block tpl">
         <div class="thumb">${x.img ? `<img src="${x.img}" alt="${esc(x.name)}${t('preview')}">` : esc(x.fileName)}</div>
         <div class="block-b">
-          <div><span class="tag">${esc(cat(x.cat))}</span></div>
+          <span class="tag">${esc(cat(x.cat))}</span>
           <h3>${esc(x.name)}</h3>
-          <p class="tpl-desc">${esc(x.desc || 'Nincs megadva leírás.')}</p>
+          ${x.desc ? `<p>${esc(x.desc)}</p>` : ''}
           <div class="actions">
-            <a class="btn" href="${x.file}" download="${esc(x.fileName)}" data-dl="${x.id}" onclick="event.stopPropagation()" style="text-decoration:none">${t('download')}</a>
-            <span class="meta">⬇ ${x.dl}</span>
+            <!-- KÖZVETLEN LETÖLTÉSI LINK A DRIVE-BÓL -->
+            <a class="btn" href="${x.file}" download="${esc(x.fileName)}" data-dl="${x.id}" style="text-decoration:none">${t('download')}</a>
+            <span class="meta">⬇ ${x.dl} · ${ago(x.t)}</span>
           </div>
         </div>
       </article>`).join('');
@@ -805,109 +766,10 @@ function renderTpls(){
   updateSum('templates', list.length);
 }
 
-/* Részletes Sablon Profil Nézet */
-function renderTplDetail(id){
-  const x = tpls.find(item => item.id === id);
-  const container = $('#tpl-detail-content');
-  
-  if (!x) {
-    container.innerHTML = `<div class="block empty"><div class="big">#N/A</div><h3>Sablon nem található!</h3></div>`;
-    return;
-  }
-
-  const reviews = x.reviews || [];
-  const avgRating = reviews.length ? (reviews.reduce((a,b)=>a+b.rating,0)/reviews.length).toFixed(1) : 0;
-  const starsHtml = '★'.repeat(Math.round(avgRating)) + '☆'.repeat(5 - Math.round(avgRating));
-
-  container.innerHTML = `
-    <div class="tpl-detail-grid">
-      <div style="display:flex; flex-direction:column; gap:20px;">
-        <div class="block sel" style="padding:24px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-            <span class="tag">${esc(cat(x.cat))}</span>
-            <span class="meta">🕒 ${ago(x.t)} · ⬇ ${x.dl} letöltés</span>
-          </div>
-          <h1 style="font-size:28px; margin-bottom:16px;">${esc(x.name)}</h1>
-          
-          <div class="tpl-detail-hero" style="margin-bottom:20px;">
-            ${x.img ? `<img src="${x.img}" alt="${esc(x.name)}">` : `<div class="no-img">📊 ${esc(x.fileName)}</div>`}
-          </div>
-
-          <h2>Leírás</h2>
-          <p style="font-size:15px; line-height:1.6; color:var(--ink); white-space:pre-line;">${esc(x.desc || 'Nincs részletes leírás ehhez a sablonhoz.')}</p>
-        </div>
-
-        <!-- Vélemények kártya -->
-        <div class="block" style="padding:24px;">
-          <h2>${t('tpl.reviews')} (${reviews.length})</h2>
-          ${reviews.length ? `<div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
-            <span class="rating-stars">${starsHtml}</span>
-            <strong>${avgRating} / 5.0</strong>
-          </div>` : `<p style="color:var(--muted);">${t('tpl.no_reviews')}</p>`}
-
-          <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
-            ${reviews.map(r => `
-              <div class="comment">
-                <div class="who">👤 ${esc(r.author)} <span class="rating-stars" style="font-size:14px;">${'★'.repeat(r.rating)}</span> <time>${ago(r.t)}</time></div>
-                <p style="margin-top:6px;">${esc(r.body)}</p>
-              </div>
-            `).join('')}
-          </div>
-
-          <form id="review-form" style="background:var(--canvas); padding:16px; border:1px solid var(--line); border-radius:4px;">
-            <h3 style="margin-top:0;">${t('tpl.add_review')}</h3>
-            <div class="field">
-              <label>Értékelés (1 - 5 csillag):</label>
-              <select id="r-rating">
-                <option value="5">★★★★★ (5/5)</option>
-                <option value="4">★★★★☆ (4/5)</option>
-                <option value="3">★★★☆☆ (3/5)</option>
-                <option value="2">★★☆☆☆ (2/5)</option>
-                <option value="1">★☆☆☆☆ (1/5)</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Vélemény szövege:</label>
-              <textarea id="r-body" required placeholder="Írd le a tapasztalataidat a sablonnal kapcsolatban..."></textarea>
-            </div>
-            <button class="btn" type="submit">Vélemény elküldése</button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Jobb oldali műveleti sáv -->
-      <div class="block sel" style="padding:20px;">
-        <h3 style="margin-top:0;">Sablon Letöltése</h3>
-        <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Fájlnév: <strong>${esc(x.fileName)}</strong></p>
-        <a class="btn" href="${x.file}" download="${esc(x.fileName)}" data-dl="${x.id}" style="width:100%; text-align:center; padding:12px 18px; font-size:16px;">
-          ⬇ ${t('download')}
-        </a>
-      </div>
-    </div>
-  `;
-
-  // Vélemény form beküldés
-  const revForm = $('#review-form');
-  if(revForm) {
-    revForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const rating = parseInt($('#r-rating').value, 10);
-      const body = $('#r-body').value.trim();
-      if(!body) return;
-
-      if(!x.reviews) x.reviews = [];
-      x.reviews.unshift({ id: 'r'+Date.now(), author: me, rating, body, t: Date.now() });
-      saveTpls();
-      toast(t('toast.rev'));
-      renderTplDetail(id);
-    });
-  }
-}
-
 ['#f-q','#f-cat','#f-img','#f-desc','#f-sort'].forEach(s=>$(s).addEventListener('input', renderTpls));
 
 // Letöltésszámláló
-document.addEventListener('click', e => {
+$('#tpl-list').addEventListener('click', e=>{
   const a = e.target.closest('[data-dl]'); if(!a) return;
   const x = tpls.find(y=>y.id===a.dataset.dl);
   if (x) {
@@ -920,10 +782,7 @@ document.addEventListener('click', e => {
     } else {
       saveTpls();
     }
-    setTimeout(() => {
-      if (current === 'templates') renderTpls();
-      if (current === 'template-detail') route();
-    }, 50);
+    setTimeout(renderTpls, 50);
   }
 });
 
@@ -948,7 +807,7 @@ $('#upload-form').addEventListener('submit', async e=>{
   try {
     const fileBase64 = await readAs(file);
     const imgBase64 = imgF ? await readAs(imgF) : '';
-    const category = $('#u-newcat').value.trim() \vert{}\vert{} $('#u-cat').value;
+    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
     const description = $('#u-desc').value.trim();
 
     if (SCRIPT_URL) {
@@ -972,7 +831,7 @@ $('#upload-form').addEventListener('submit', async e=>{
       await loadTplsFromDrive();
     } else {
       const x = { id:'t'+Date.now(), name, cat: category, desc: description,
-        file: fileBase64, fileName:file.name, img: imgBase64, t:Date.now(), dl:0, reviews:[] };
+        file: fileBase64, fileName:file.name, img: imgBase64, t:Date.now(), dl:0 };
       tpls.unshift(x);
       saveTpls();
       renderCats();
@@ -997,7 +856,7 @@ function updateSum(key, shown){
   if (key==='brainstorming'){
     const v = ideas.reduce((a,b)=>a+b.votes,0), c = ideas.reduce((a,b)=>a+b.comments.length,0);
     s.innerHTML = `<span>${t('st.count')}: ${ideas.length}</span><span>${t('st.cmts')}: ${c}</span><span>${t('st.sum')}: ${v}</span>`;
-  } else if (key==='templates' || key==='template-detail'){
+  } else if (key==='templates'){
     const n = shown ?? document.querySelectorAll('#tpl-list .tpl').length;
     s.innerHTML = `<span>${t('st.filtered')}: ${n} / ${tpls.length}</span><span>${t('st.dl')}: ${tpls.reduce((a,b)=>a+b.dl,0)}</span>`;
   } else s.innerHTML = `<span>${t('st.ready')}</span>`;
