@@ -670,17 +670,46 @@ $('#ideas').addEventListener('submit', e=>{
   ideas.find(x=>x.id===f.dataset.cform).comments.push({id:'c'+Date.now(), author:me, t:Date.now(), body:txt, votes:0});
   saveIdeas(); renderIdeas(); updateSum('brainstorming'); toast(t('toast.cmt'));
 });
-$('#idea-form').addEventListener('submit', e=>{
+$('#idea-form').addEventListener('submit', async e => {
   e.preventDefault();
-  const title=$('#i-title').value.trim(), body=$('#i-body').value.trim();
-  if(!title||!body) return;
-  ideas.unshift({id:'i'+Date.now(), author:me, t:Date.now(), cat:$('#i-cat').value, title, body, votes:0, open:false, comments:[]});
-  saveIdeas(); renderIdeas(); $('#i-title').value=''; $('#i-body').value=''; updateSum('brainstorming'); toast(t('toast.idea'));
+  const title = $('#i-title').value.trim(), body = $('#i-body').value.trim();
+  if (!title || !body) return;
+
+  const newIdea = {
+    id: 'i' + Date.now(),
+    author: me,
+    t: Date.now(),
+    cat: $('#i-cat').value,
+    title: title,
+    body: body,
+    votes: 0,
+    open: false,
+    comments: []
+  };
+
+  if (SCRIPT_URL) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'addIdea', idea: newIdea })
+      });
+    } catch(err) {
+      console.error("Nem sikerült elmenteni az ötletet a Drive-ra", err);
+    }
+  }
+
+  ideas.unshift(newIdea);
+  saveIdeas();
+  renderIdeas();
+  $('#i-title').value = '';
+  $('#i-body').value = '';
+  updateSum('brainstorming');
+  toast(t('toast.idea'));
 });
 
 /* ---------- Google Drive Integration & Templates ---------- */
 // A TELEPÍTETT GOOGLE APPS SCRIPT WEB APP URL-JE:
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2aqg3f541VEbie_m56gkmlrhFRl4hzPnhuibH10SVv-5AM-Y9GlOIKJw1phB6XtBU/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCHRxkxU-gHYBwwvxe8hXRO41CgfzO7x1AO7Donr3P9TI9cVUJxTDXApe2YMNkpnXY/exec;
 
 let tpls = [];
 const saveTpls = () => store.set('tpls', tpls);
@@ -708,6 +737,19 @@ async function loadTplsFromDrive() {
   }
   renderCats();
   renderTpls();
+}
+  async function loadIdeasFromDrive() {
+  if (!SCRIPT_URL) return;
+  try {
+    const res = await fetch(SCRIPT_URL + "?action=getIdeas");
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      ideas = data;
+      renderIdeas();
+    }
+  } catch (e) {
+    console.error("Hiba az ötletek betöltésekor:", e);
+  }
 }
 
 function renderCats(){
@@ -941,6 +983,7 @@ async function playIntro(){
 
 applyLang();
 loadTplsFromDrive();
+loadIdeasFromDrive();
 })();
 </script>
 </body>
