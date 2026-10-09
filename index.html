@@ -670,6 +670,7 @@ $('#ideas').addEventListener('submit', e=>{
   ideas.find(x=>x.id===f.dataset.cform).comments.push({id:'c'+Date.now(), author:me, t:Date.now(), body:txt, votes:0});
   saveIdeas(); renderIdeas(); updateSum('brainstorming'); toast(t('toast.cmt'));
 });
+// Új ötlet beküldése a weboldalról
 $('#idea-form').addEventListener('submit', async e => {
   e.preventDefault();
   const title = $('#i-title').value.trim(), body = $('#i-body').value.trim();
@@ -687,17 +688,7 @@ $('#idea-form').addEventListener('submit', async e => {
     comments: []
   };
 
-  if (SCRIPT_URL) {
-    try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'addIdea', idea: newIdea })
-      });
-    } catch(err) {
-      console.error("Nem sikerült elmenteni az ötletet a Drive-ra", err);
-    }
-  }
-
+  // 1. Megjelenítjük helyben az felületen azonnal
   ideas.unshift(newIdea);
   saveIdeas();
   renderIdeas();
@@ -705,6 +696,19 @@ $('#idea-form').addEventListener('submit', async e => {
   $('#i-body').value = '';
   updateSum('brainstorming');
   toast(t('toast.idea'));
+
+  // 2. Elküldjük a Google Drive-ra az adathalmazt
+  if (SCRIPT_URL) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'addIdea', idea: newIdea })
+      });
+    } catch(err) {
+      console.error("Hiba az ötlet mentésekor:", err);
+    }
+  }
 });
 
 /* ---------- Google Drive Integration & Templates ---------- */
@@ -745,6 +749,7 @@ async function loadTplsFromDrive() {
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
       ideas = data;
+      saveIdeas();
       renderIdeas();
     }
   } catch (e) {
