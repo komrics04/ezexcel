@@ -153,20 +153,29 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .tpl .block-b{padding:14px 16px;display:flex;flex-direction:column;flex:1;overflow:hidden}
 .tpl h3{margin:4px 0 6px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Pontosan az első 4 sor látszódjon a leírásból */
+/* Pontosan az első 3 sor látszódjon a leírásból, nagyobb alsó térrel */
 .tpl p.tpl-desc{
-  margin:0 0 12px;
+  margin:0 0 16px;
   font-size:13px;
   color:var(--muted);
   line-height:1.4em;
   display:-webkit-box;
-  -webkit-line-clamp:4;
+  -webkit-line-clamp: 3; /* <--- 4 helyett most 3 sor látszódik */
   -webkit-box-orient:vertical;
   overflow:hidden;
   text-overflow:ellipsis;
-  flex:1;
 }
-.tpl .actions{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--grid)}
+
+/* Kicsitellensúlyozzuk az alsó gomsávot, hogy szellősebb legyen */
+.tpl .actions{
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-top:12px;
+  margin-bottom:8px; /* <--- extra üres tér a négyzet alján */
+  border-top:1px solid var(--grid);
+}
 
 /* Detail / Profile oldal a sablonokhoz */
 .tpl-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:calc(var(--rh)*1.5);align-items:start}
