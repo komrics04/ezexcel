@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C6B">
 <title>EzExcel – Közösségi Tér és Sablonok</title>
+<meta name="description" content="Közösségi tér Excel-rajongóknak: ingyenesen letölthető Excel sablonok használati útmutatókkal, saját sablonok megosztása, ötletbörze. Regisztráció nélkül.">
+<!-- Link-előnézet (üzenetküldők, közösségi oldalak): a logó képként jelenik meg a megosztott link mellett.
+     FIGYELEM: az og:image és a twitter:image címében az AZ-OLDALAD.hu helyére a saját domained kerüljön (teljes, https-es cím kell), és az og-image.png fájl legyen az index.html mellett. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="EzExcel">
+<meta property="og:title" content="EzExcel – Közösségi Tér és Sablonok">
+<meta property="og:description" content="Ingyenes Excel sablonok, használati útmutatók és közösségi ötletbörze – regisztráció nélkül.">
+<meta property="og:image" content="https://AZ-OLDALAD.hu/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EzExcel logó – Közösségi tér és ingyenes Excel sablonok">
+<meta property="og:locale" content="hu_HU">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EzExcel – Közösségi Tér és Sablonok">
+<meta name="twitter:description" content="Ingyenes Excel sablonok, használati útmutatók és közösségi ötletbörze – regisztráció nélkül.">
+<meta name="twitter:image" content="https://AZ-OLDALAD.hu/og-image.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <!-- Favicon (a fejléc logó SVG kódja alapján) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><rect width='30' height='30' rx='4' fill='%230E7C6B'/><rect x='2' y='2' width='26' height='26' rx='3' fill='none' stroke='%23fff' stroke-width='2'/><path d='M2 10.5h26M2 19.5h26M10.5 2v26M19.5 2v26' stroke='%23fff' stroke-width='1.4' opacity='.55'/><rect x='10.5' y='10.5' width='9' height='9' fill='none' stroke='%23fff' stroke-width='2.4'/><rect x='17' y='17' width='5' height='5' fill='%23fff' stroke='%230E7C6B' stroke-width='1'/></svg>">
 <script>
@@ -220,7 +239,16 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .gd-steps{list-style:none;padding:0;margin:0;display:grid;gap:10px;counter-reset:s}
 .gd-steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start;line-height:1.5}
 .gd-steps li::before{content:counter(s);background:var(--green);color:#fff;font-family:var(--mono);font-size:13px;display:grid;place-items:center;height:26px}
-.gd-steps strong{display:block}
+.gd-md h3,.gd-md-h{margin:20px 0 6px;font-size:18px}
+.gd-md > :first-child{margin-top:0}
+.gd-md code,.gprev code{font-family:var(--mono);background:var(--head);padding:1px 5px;border-radius:2px;font-size:.92em}
+.gd-md ol,.gd-md ul{margin-bottom:10px}
+.btn.sm{padding:4px 12px;min-height:30px;font-size:13px}
+.gtabs{display:flex;gap:8px;flex-wrap:wrap}
+.hint{color:var(--muted);font-size:12px}
+.gprev{border:1px solid var(--line);background:var(--canvas);padding:12px 14px;max-height:280px;overflow:auto}
+.gprev .gd{margin-top:0}
+.gd-steps .gs strong{display:block}
 .gd-steps span{color:var(--muted);font-size:14px}
 .empty .big{font-family:var(--mono);font-size:34px;color:var(--danger);font-weight:500;margin-bottom:8px}
 .empty p{color:var(--muted);margin:0}
@@ -455,6 +483,11 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
         <input type="text" id="u-newcat" data-i18n-ph="u.newcat" data-i18n-aria="u.newcat"></div>
       <div class="field"><label data-i18n="u.lang"></label><div id="u-lang"></div></div>
       <div class="field"><label for="u-desc" data-i18n="u.desc"></label><textarea id="u-desc" data-i18n-ph="u.desc.ph"></textarea></div>
+      <div class="field"><label for="u-guide" data-i18n="u.guide"></label>
+        <div class="gtabs"><button type="button" class="btn ghost sm" id="u-guide-sample" data-i18n="u.guide.sample"></button><button type="button" class="btn ghost sm" id="u-guide-prev" aria-pressed="false" data-i18n="u.guide.prev"></button></div>
+        <textarea id="u-guide" rows="6" maxlength="8000" data-i18n-ph="u.guide.ph"></textarea>
+        <div class="gprev" id="u-guide-view" hidden></div>
+        <small class="hint"><span data-i18n="u.guide.hint"></span> · <span id="u-guide-n">0 / 8000</span></small></div>
       <div class="field"><label for="u-file" data-i18n="u.file"></label><input type="file" id="u-file" accept=".xlsx, .xls" required></div>
       <div class="field"><label for="u-img" data-i18n="u.img"></label><input type="file" id="u-img" accept="image/*"></div>
       <p class="err" id="u-err"></p>
@@ -501,7 +534,7 @@ const I18N = {
   'u.desc':'Rövid leírás','u.desc.ph':'Írd le mire való a sablon...','u.file':'Excel fájl (.xlsx, .xls) *','u.img':'Indexkép / Előnézet (opcionális)',
   'u.cancel':'Mégse','u.save':'Feltöltés mentése',
   'err.name':'Add meg a sablon nevét.','err.file':'Válassz egy .xlsx vagy .xls fájlt.','err.size':'A fájl túl nagy: legfeljebb 3 MB lehet.','err.store':'Nem sikerült menteni a Google Drive-ba.',
-  'back':'Vissza a sablonokhoz','tpl.guide':'Használati útmutató','tpl.noguide':'Ehhez a sablonhoz még nem készült útmutató.','tpl.notfound':'A sablon nem található.','tpl.copy':'Link másolása','toast.copied':'Link kimásolva','tpl.file':'Fájl','tpl.lang':'Nyelv','lang.any':'Nyelvfüggetlen','f.lang.all':'Minden nyelv','aria.lang2':'Szűrés nyelv szerint','u.lang':'A sablon nyelve *','g.purpose':'Mire jó?','g.aud':'Kinek ajánljuk?','g.feat':'Fő funkciók','g.sheets':'A munkalapok bemutatása','g.start':'Első lépések','g.steps':'Így használd','g.faq':'Gyakori kérdések','g.notes':'Fontos tudnivalók','g.hu':'Az útmutató magyar nyelvű.','u.prep':'Kép előkészítése…','u.sending':'Feltöltés…',
+  'back':'Vissza a sablonokhoz','tpl.guide':'Használati útmutató','tpl.noguide':'Ehhez a sablonhoz még nincs útmutató. A feltöltő a sablon feltöltésekor adhat meg egyet.','tpl.notfound':'A sablon nem található.','tpl.copy':'Link másolása','toast.copied':'Link kimásolva','tpl.file':'Fájl','tpl.lang':'Nyelv','lang.any':'Nyelvfüggetlen','f.lang.all':'Minden nyelv','aria.lang2':'Szűrés nyelv szerint','u.lang':'A sablon nyelve *','u.guide':'Használati útmutató (nem kötelező)','u.guide.ph':'Írd le röviden, hogyan kell használni a sablont – a letöltők ezt látják a sablon oldalán.','u.guide.hint':'Formázás: ## Cím · - felsorolás · 1. lépések · **félkövér**','u.guide.sample':'Minta beillesztése','u.guide.prev':'Előnézet','u.guide.edit':'Szerkesztés','u.guide.replace':'A beírt szöveg helyére a minta kerül. Folytatod?','err.guide':'Az útmutató legfeljebb 8000 karakter lehet.','g.community':'Az útmutatót a sablon feltöltője írta.','g.purpose':'Mire jó?','g.aud':'Kinek ajánljuk?','g.feat':'Fő funkciók','g.sheets':'A munkalapok bemutatása','g.start':'Első lépések','g.steps':'Így használd','g.faq':'Gyakori kérdések','g.notes':'Fontos tudnivalók','g.hu':'Az útmutató magyar nyelvű.','u.prep':'Kép előkészítése…','u.sending':'Feltöltés…',
   'toast.cmt':'Hozzászólás elküldve','toast.idea':'Ötlet elküldve','toast.tpl':'Sablon feltöltve',
   'st.ready':'Kész','st.count':'Darab','st.cmts':'Kommentek','st.sum':'Összeg (👍)','st.filtered':'Szűrve','st.dl':'Letöltések',
   'copy.home':'© 2026 EzExcel. Minden jog fenntartva.','copy.brain':'© 2026 EzExcel Brainstorming. Minden jog fenntartva.',
@@ -561,7 +594,7 @@ const I18N = {
   'u.desc':'Short description','u.desc.ph':'Describe what the template is for...','u.file':'Excel file (.xlsx, .xls) *','u.img':'Thumbnail / Preview (optional)',
   'u.cancel':'Cancel','u.save':'Save upload',
   'err.name':'Enter a template name.','err.file':'Choose an .xlsx or .xls file.','err.size':'The file is too large: 3 MB maximum.','err.store':'Could not save to Google Drive.',
-  'back':'Back to templates','tpl.guide':'User guide','tpl.noguide':'There is no guide for this template yet.','tpl.notfound':'Template not found.','tpl.copy':'Copy link','toast.copied':'Link copied','tpl.file':'File','tpl.lang':'Language','lang.any':'Language-independent','f.lang.all':'All languages','aria.lang2':'Filter by language','u.lang':'Template language *','g.purpose':'What is it for?','g.aud':'Who is it for?','g.feat':'Key features','g.sheets':'The worksheets','g.start':'Getting started','g.steps':'How to use it','g.faq':'FAQ','g.notes':'Good to know','g.hu':'The guide is available in Hungarian only.','u.prep':'Preparing image…','u.sending':'Uploading…',
+  'back':'Back to templates','tpl.guide':'User guide','tpl.noguide':'There is no guide for this template yet. The uploader can add one when uploading.','tpl.notfound':'Template not found.','tpl.copy':'Copy link','toast.copied':'Link copied','tpl.file':'File','tpl.lang':'Language','lang.any':'Language-independent','f.lang.all':'All languages','aria.lang2':'Filter by language','u.lang':'Template language *','u.guide':'User guide (optional)','u.guide.ph':'Briefly explain how to use the template – downloaders will see this on the template page.','u.guide.hint':'Formatting: ## Heading · - list · 1. steps · **bold**','u.guide.sample':'Insert sample','u.guide.prev':'Preview','u.guide.edit':'Edit','u.guide.replace':'Your text will be replaced by the sample. Continue?','err.guide':'The guide can be at most 8000 characters.','g.community':'This guide was written by the person who uploaded the template.','g.purpose':'What is it for?','g.aud':'Who is it for?','g.feat':'Key features','g.sheets':'The worksheets','g.start':'Getting started','g.steps':'How to use it','g.faq':'FAQ','g.notes':'Good to know','g.hu':'The guide is available in Hungarian only.','u.prep':'Preparing image…','u.sending':'Uploading…',
   'toast.cmt':'Comment sent','toast.idea':'Idea submitted','toast.tpl':'Template uploaded',
   'st.ready':'Ready','st.count':'Count','st.cmts':'Comments','st.sum':'Sum (👍)','st.filtered':'Filtered','st.dl':'Downloads',
   'copy.home':'© 2026 EzExcel. All rights reserved.','copy.brain':'© 2026 EzExcel Brainstorming. All rights reserved.',
@@ -790,7 +823,21 @@ $('#idea-form').addEventListener('submit', async e => {
 const SCRIPT_URL = window.EZX_SCRIPT_URL;
 
 // Az utoljára ismert lista azonnal megjelenik (stale-while-revalidate), a friss adat a háttérben érkezik.
-let tpls = store.get('tplcache', null) || [];
+// A nyelv és a használati útmutató a leírás végére csomagolva is utazhat ("[[ezx:{...}]]"), így a Google Apps Script módosítása nélkül is mentődik.
+// Ha a szkript később külön "lang" / "guide" mezőt ad vissza, azokat részesítjük előnyben.
+const EZX_RE = /\n*\[\[ezx:([\s\S]*)\]\]\s*$/;
+function normTpl(x){
+  let desc = String(x.desc || ''), lg = x.lang, guide = x.guide;
+  const m = desc.match(EZX_RE);
+  if (m){
+    desc = desc.slice(0, m.index);
+    try { const j = JSON.parse(m[1]); lg = lg || j.l; guide = guide || j.g; } catch(e){}
+  }
+  return Object.assign({}, x, { desc: desc.trim(), lang: lg || undefined, guideText: typeof guide === 'string' ? guide.trim() : '' });
+}
+const tplRaw0 = store.get('tplcache', null) || [];
+let lastRaw = JSON.stringify(tplRaw0);
+let tpls = tplRaw0.map(normTpl);
 let tplsLoaded = tpls.length > 0, tplsLoading = false, tplFetchedAt = 0, tplInflight = null, detailId = null, lastDetailKey = '';
 const saveTpls = () => store.set('tpls', tpls);
 
@@ -875,7 +922,7 @@ document.addEventListener('error', e => {
 // Sablonok élő betöltése Google Drive-ból (gyorsítótárral, párhuzamos kérések nélkül)
 function loadTplsFromDrive(force){
   if (!SCRIPT_URL){
-    tpls = store.get('tpls', []); tplsLoaded = true;
+    tpls = store.get('tpls', []).map(normTpl); tplsLoaded = true;
     renderCats(); renderTpls(); renderTplView();
     return Promise.resolve();
   }
@@ -891,13 +938,14 @@ function loadTplsFromDrive(force){
     try {
       const data = await req;
       if (Array.isArray(data)){
-        changed = JSON.stringify(data) !== JSON.stringify(tpls);
-        tpls = data;
+        const raw = JSON.stringify(data);
+        changed = raw !== lastRaw; lastRaw = raw;
+        tpls = data.map(normTpl);
         store.set('tplcache', data);
       }
     } catch(e){
       console.error("Hiba a Drive sablonok betöltésekor:", e);
-      if (!tpls.length) tpls = store.get('tpls', []);
+      if (!tpls.length) tpls = store.get('tpls', []).map(normTpl);
     }
     tplsLoaded = true; tplsLoading = false; tplFetchedAt = Date.now(); tplInflight = null;
     if (changed || wasEmpty){ renderCats(); renderTpls(); renderTplView(); }
@@ -999,7 +1047,6 @@ $('#tpl-detail').addEventListener('click', e=>{
 const nrm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 let guideIdx = null; const guideCache = {};
 async function findGuideId(x){
-  if (x.guide) return String(x.guide);
   if (!guideIdx){ try { guideIdx = await (await fetch('guides/index.json')).json(); } catch(e){ guideIdx = []; } }
   const n = nrm(x.name);
   for (const g of guideIdx){ if (n === g.keys[0] || n.includes(g.keys[0]) || g.keys.slice(1).includes(n)) return g.id; }
@@ -1011,10 +1058,29 @@ async function loadGuide(x){
   if (guideCache[id]) return guideCache[id];
   try { const g = await (await fetch('guides/' + encodeURIComponent(id) + '.json')).json(); guideCache[id] = g; return g; } catch(e){ return null; }
 }
+// Egyszerű, biztonságos (HTML-escape-elt) formázás: ## cím, ### alcím, - felsorolás, 1. lépések, **félkövér**, `kód`
+function mdHtml(src){
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  const out = []; let list = null;
+  const close = () => { if (list){ out.push(list === 'ul' ? '</ul>' : '</ol>'); list = null; } };
+  for (const raw of String(src).replace(/\r/g,'').split('\n')){
+    const l = raw.trim(); let m;
+    if (!l){ close(); continue; }
+    if ((m = l.match(/^(#{2,3})\s+(.+)$/))){ close(); out.push(m[1].length === 2 ? `<h3 class="gd-md-h">${inline(m[2])}</h3>` : `<h4>${inline(m[2])}</h4>`); }
+    else if ((m = l.match(/^[-*•]\s+(.+)$/))){ if (list !== 'ul'){ close(); out.push('<ul>'); list = 'ul'; } out.push(`<li>${inline(m[1])}</li>`); }
+    else if ((m = l.match(/^\d+[.)]\s+(.+)$/))){ if (list !== 'ol'){ close(); out.push('<ol class="gd-steps">'); list = 'ol'; } out.push(`<li><div>${inline(m[1])}</div></li>`); }
+    else { close(); out.push(`<p>${inline(l)}</p>`); }
+  }
+  close();
+  return out.join('');
+}
+function authoredGuideHtml(text){
+  return `<h2 class="gd-h">${t('tpl.guide')}</h2><p class="gd-note">${t('g.community')}</p><div class="block"><div class="block-b gd-md">${mdHtml(text)}</div></div>`;
+}
 function guideHtml(g){
   if (!g) return `<p class="gd-none">${t('tpl.noguide')}</p>`;
   const ul = a => `<ul>${a.map(v=>`<li>${esc(v)}</li>`).join('')}</ul>`;
-  const steps = a => `<ol class="gd-steps">${a.map(v=>`<li><div><strong>${esc(v[0])}</strong><span>${esc(v[1])}</span></div></li>`).join('')}</ol>`;
+  const steps = a => `<ol class="gd-steps">${a.map(v=>`<li><div class="gs"><strong>${esc(v[0])}</strong><span>${esc(v[1])}</span></div></li>`).join('')}</ol>`;
   const blk = (title, body, pad=true) => `<div class="block"><div class="block-h"><span>${esc(title)}</span></div>${pad?`<div class="block-b">${body}</div>`:body}</div>`;
   return `<h2 class="gd-h">${t('tpl.guide')}</h2>
     ${lang!=='hu' ? `<p class="gd-note">${t('g.hu')}</p>` : ''}
@@ -1041,7 +1107,7 @@ function renderTplView(){
     lastDetailKey = '';
     return;
   }
-  const key = [x.id, x.name, x.cat, x.desc, x.img, x.file, lgOf(x), lang].join('|');
+  const key = [x.id, x.name, x.cat, x.desc, x.img, x.file, lgOf(x), lang, x.guideText].join('|');
   if (key === lastDetailKey) return;           // háttérfrissítésnél ne villogjon az oldal
   lastDetailKey = key;
   document.title = 'EzExcel - ' + x.name;
@@ -1063,12 +1129,33 @@ function renderTplView(){
       </aside>
     </div>
     <section class="gd" id="tpl-guide"><div class="block"><div class="block-b"><span class="sk h"></span><span class="sk"></span><span class="sk s"></span></div></div></section>`;
-  loadGuide(x).then(g => { if (detailId === String(x.id)){ const el = $('#tpl-guide'); if (el) el.innerHTML = guideHtml(g); } });
+  const done = html => { if (detailId === String(x.id)){ const el = $('#tpl-guide'); if (el) el.innerHTML = html; } };
+  if (x.guideText) done(authoredGuideHtml(x.guideText));      // a feltöltő által írt útmutató
+  else loadGuide(x).then(g => done(guideHtml(g)));            // a 10 alap sablon beépített útmutatója (guides/ mappa)
 }
 
 // Új sablon feltöltése a Google Drive-ba
 const dlg = $('#upload');
-$('#open-upload').addEventListener('click', ()=>{ $('#u-err').textContent=''; uLang.setValue(defaultUpLang()); dlg.showModal(); });
+$('#open-upload').addEventListener('click', ()=>{ $('#u-err').textContent=''; uLang.setValue(defaultUpLang()); guideShow(false); guideCount(); dlg.showModal(); });
+// Útmutató-szerkesztő a feltöltő ablakban
+const GUIDE_MAX = 8000;
+const guideTa = $('#u-guide'), guideView = $('#u-guide-view'), guidePrev = $('#u-guide-prev');
+const guideSample = () => lang === 'hu'
+  ? "## Mire jó?\nEgy-két mondat arról, mire használható a sablon.\n\n## Hogyan használd?\n1. Nyisd meg a fájlt, és keresd meg a kitöltendő (sárga) cellákat.\n2. Írd be a saját adataidat.\n3. Olvasd le az eredményt.\n\n## Tippek\n- Mire figyeljen a felhasználó?\n- Mely cellákat ne írja át?"
+  : "## What is it for?\nOne or two sentences about what the template is used for.\n\n## How to use it\n1. Open the file and find the cells to fill in.\n2. Enter your own data.\n3. Read the result.\n\n## Tips\n- What should the user watch out for?\n- Which cells should not be changed?";
+const guideCount = () => { $('#u-guide-n').textContent = guideTa.value.length + ' / ' + GUIDE_MAX; };
+const guideShow = on => {
+  guidePrev.setAttribute('aria-pressed', String(on));
+  guideView.hidden = !on; guideTa.hidden = on;
+  if (on) guideView.innerHTML = guideTa.value.trim() ? `<div class="gd">${mdHtml(guideTa.value)}</div>` : '';
+  guidePrev.textContent = t(on ? 'u.guide.edit' : 'u.guide.prev');
+};
+guideTa.addEventListener('input', guideCount);
+guidePrev.addEventListener('click', () => guideShow(guidePrev.getAttribute('aria-pressed') !== 'true'));
+$('#u-guide-sample').addEventListener('click', () => {
+  if (guideTa.value.trim() && !confirm(t('u.guide.replace'))) return;
+  guideShow(false); guideTa.value = guideSample(); guideCount(); guideTa.focus();
+});
 const readAs = f => new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); });
 // Az indexképet feltöltés előtt kisebbre (max. 1000 px, JPEG) tömörítjük: telefonos fotónál több MB helyett pár 100 KB megy fel.
 async function shrinkImage(f, maxW=1000, q=0.82){
@@ -1089,6 +1176,7 @@ $('#upload-form').addEventListener('submit', async e=>{
   if(!name){ $('#u-err').textContent=t('err.name'); return; }
   if(!file || !/\.xlsx?$/i.test(file.name)){ $('#u-err').textContent=t('err.file'); return; }
   if(file.size > 3e6){ $('#u-err').textContent=t('err.size'); return; }
+  if($('#u-guide').value.length > GUIDE_MAX){ $('#u-err').textContent=t('err.guide'); return; }
 
   const saveBtn = $('#u-save');
   saveBtn.disabled = true;
@@ -1101,13 +1189,17 @@ $('#upload-form').addEventListener('submit', async e=>{
     const category = $('#u-newcat').value.trim() || $('#u-cat').value;
     const description = $('#u-desc').value.trim();
     const language = uLang.dataset.value || defaultUpLang();
+    const guide = $('#u-guide').value.trim();
+    // Biztos út: a nyelv és az útmutató a leíráshoz csomagolva megy (a jelenlegi szkript is elmenti); a külön mezőket a jövőbeli szkript használhatja.
+    const packed = description + '\n\n[[ezx:' + JSON.stringify(guide ? { l: language, g: guide } : { l: language }) + ']]';
 
     if (SCRIPT_URL) {
       const payload = {
         name: name,
         cat: category,
         lang: language,
-        desc: description,
+        guide: guide,
+        desc: packed,
         fileName: file.name,
         fileData: fileBase64,
         imgData: imgBase64
@@ -1123,7 +1215,7 @@ $('#upload-form').addEventListener('submit', async e=>{
       }
       loadTplsFromDrive(true);   // a lista a háttérben frissül – a párbeszédablak azonnal bezárul
     } else {
-      const x = { id:'t'+Date.now(), name, cat: category, lang: language, desc: description,
+      const x = { id:'t'+Date.now(), name, cat: category, lang: language, desc: description, guide: guide,
         file: fileBase64, fileName:file.name, img: imgBase64, t:Date.now(), dl:0 };
       tpls.unshift(x);
       saveTpls();
@@ -1132,7 +1224,7 @@ $('#upload-form').addEventListener('submit', async e=>{
     }
 
     e.target.reset();
-    uLang.setValue(defaultUpLang());
+    uLang.setValue(defaultUpLang()); guideShow(false); guideCount();
     dlg.close();
     toast(t('toast.tpl'));
   } catch(err) {
