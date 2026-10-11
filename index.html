@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C6B">
 <title>EzExcel – Közösségi Tér és Sablonok</title>
+<!-- Google AdSense hitelesítő meta címke és szkript -->
+<meta name="google-adsense-account" content="ca-pub-4135085093423612">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4135085093423612"
+     crossorigin="anonymous"></script>
 <meta name="description" content="Közösségi tér Excel-rajongóknak: ingyenesen letölthető Excel sablonok használati útmutatókkal, saját sablonok megosztása, ötletbörze. Regisztráció nélkül.">
 <!-- Link-előnézet (üzenetküldők, közösségi oldalak): a logó képként jelenik meg a megosztott link mellett.
      FIGYELEM: az og:image és a twitter:image címében az AZ-OLDALAD.hu helyére a saját domained kerüljön (teljes, https-es cím kell), és az og-image.png fájl legyen az index.html mellett. -->
@@ -538,7 +542,7 @@ const I18N = {
   'toast.cmt':'Hozzászólás elküldve','toast.idea':'Ötlet elküldve','toast.tpl':'Sablon feltöltve',
   'st.ready':'Kész','st.count':'Darab','st.cmts':'Kommentek','st.sum':'Összeg (👍)','st.filtered':'Szűrve','st.dl':'Letöltések',
   'copy.home':'© 2026 EzExcel. Minden jog fenntartva.','copy.brain':'© 2026 EzExcel Brainstorming. Minden jog fenntartva.',
-  'disclaimer':'Az EzExcel független közösségi oldal, nem áll kapcsolatban a Microsofttal. Az Excel a Microsoft Corporation védjegye.',
+  'disclaimer':'Az EzExcel független közösségi oldal, nem áll kapcsolatban a Microsofttal. Excel a Microsoft Corporation védjegye.',
   'ago.now':'most','ago.m':n=>n+' perce','ago.h':n=>n+' órája','ago.d':n=>n+' napja',
   'title.home':'Főoldal','title.brain':'Brainstorming Ötletbörze','title.tpl':'Sablonok','title.about':'Rólunk','title.privacy':'Adatvédelmi nyilatkozat','title.contact':'Kapcsolat',
 
@@ -1000,12 +1004,11 @@ function renderTpls(){
         <div class="thumb">${x.img ? `<img src="${esc(fastImg(x.img,720))}" data-orig="${esc(x.img)}" alt="${esc(x.name)}${t('preview')}" ${i<4?'':'loading="lazy"'} decoding="async">` : esc(x.fileName)}</div>
         <div class="block-b">
           <div class="tags"><span class="tag">${esc(cat(x.cat))}</span><span class="tag lg" title="${esc(langName(lgOf(x)))}">${flagImg(lgOf(x))}${lgOf(x)==='any' ? '' : esc(lgOf(x).toUpperCase())}</span></div>
-          <h3><a href="#templates/${encodeURIComponent(x.id)}">${esc(x.name)}</a></h3>
-          ${x.desc ? `<p class="tpl-desc">${esc(x.desc)}</p>` : ''}
+          <h3><a href="#templates/${encodeURIComponent(x.id)}">${esc(x.name)}</a></h3>${x.desc ? `<p class="tpl-desc">${esc(x.desc)}</p>` : ''}
           <div class="actions">
             <!-- KÖZVETLEN LETÖLTÉSI LINK A DRIVE-BÓL -->
             <a class="btn" href="${esc(x.file)}" download="${esc(x.fileName)}" data-dl="${esc(x.id)}" style="text-decoration:none">${t('download')}</a>
-            <span class="meta">⬇ ${x.dl} · ${ago(x.t)}</span>
+            <span class="meta">⬇ ${x.dl} ·${ago(x.t)}</span>
           </div>
         </div>
       </article>`).join('');
@@ -1023,7 +1026,7 @@ function countDl(id){
   if (SCRIPT_URL){
     fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify({ action:'incrementDownload', id:x.id }) }).catch(()=>{});
   } else saveTpls();
-  setTimeout(()=>{ renderTpls(); const m = $('#tpl-dl-meta'); if (m) m.textContent = `⬇ ${x.dl} · ${ago(x.t)}`; }, 50);
+  setTimeout(()=>{ renderTpls(); const m = $('#tpl-dl-meta'); if (m) m.textContent = `⬇ ${x.dl} ·${ago(x.t)}`; }, 50);
 }
 // Csempére kattintva megnyílik a sablon profiloldala
 $('#tpl-list').addEventListener('click', e=>{
@@ -1186,7 +1189,7 @@ $('#upload-form').addEventListener('submit', async e=>{
   try {
     const [fileBase64, imgBase64] = await Promise.all([readAs(file), imgF ? shrinkImage(imgF) : '']);
     saveBtn.textContent = t('u.sending');
-    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
+    const category = $('#u-newcat').value.trim() \vert{}\vert{} $('#u-cat').value;
     const description = $('#u-desc').value.trim();
     const language = uLang.dataset.value || defaultUpLang();
     const guide = $('#u-guide').value.trim();
