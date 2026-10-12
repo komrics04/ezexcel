@@ -1202,7 +1202,7 @@ $('#upload-form').addEventListener('submit', async e=>{
   try {
     const [fileBase64, imgBase64] = await Promise.all([readAs(file), imgF ? shrinkImage(imgF) : '']);
     saveBtn.textContent = t('u.sending');
-    const category = $('#u-newcat').value.trim() \vert{}\vert{} $('#u-cat').value;
+    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
     const description = $('#u-desc').value.trim();
     const language = uLang.dataset.value || defaultUpLang();
     const guide = $('#u-guide').value.trim();
