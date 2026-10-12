@@ -164,7 +164,7 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .filters input,.filters select{min-height:40px}
 @media (max-width:1100px){.filters{grid-template-columns:1fr 1fr}.filters > *{border-bottom:1px solid var(--line)}.filters input{grid-column:1/-1}.filters > :last-child{grid-column:1/-1}}
 
-/* ITT MÓDOSÍTVA: 4 oszlopos elrendezés nagy képernyőn */
+/* 4 oszlopos elrendezés nagy képernyőn */
 .tpl-list{--tpl-lines:3;display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:var(--rh)}
 @media (max-width: 1200px){.tpl-list{grid-template-columns:repeat(3, minmax(0, 1fr))}}
 @media (max-width: 900px){.tpl-list{grid-template-columns:repeat(2, minmax(0, 1fr))}}
@@ -826,9 +826,8 @@ let lastRaw = JSON.stringify(tplRaw0);
 let tpls = tplRaw0.map(normTpl);
 let tplsLoaded = tpls.length > 0, tplsLoading = false, tplFetchedAt = 0, tplInflight = null, detailId = null, lastDetailKey = '';
 
-// Pagination state
 let currentTplPage = 1;
-const tplsPerPage = 12; // 4 oszlop esetén pl. 12 vagy 16 elem oldalanként szép gridet ad
+const tplsPerPage = 12;
 
 const saveTpls = () => store.set('tpls', tpls);
 
@@ -977,7 +976,6 @@ function renderTpls(){
     (img==='' || (!!x.img)===(img==='1')) && (desc==='' || (!!x.desc)===(desc==='1')));
   list.sort((a,b)=> sort==='old' ? a.t-b.t : sort==='dl' ? b.dl-a.dl : b.t-a.t);
 
-  // Lapozás számítása
   const totalPages = Math.ceil(list.length / tplsPerPage) || 1;
   if (currentTplPage > totalPages) currentTplPage = totalPages;
   if (currentTplPage < 1) currentTplPage = 1;
@@ -1005,7 +1003,6 @@ function renderTpls(){
         </div>
       </article>`).join('');
 
-    // Lapozó gombok kirajzolása
     if (totalPages > 1) {
       let pagesHtml = `<button type="button" data-page-btn="${currentTplPage - 1}" ${currentTplPage === 1 ? 'disabled' : ''}>« Előző</button>`;
       for (let p = 1; p <= totalPages; p++) {
@@ -1024,13 +1021,11 @@ function renderTpls(){
   updateSum('templates', list.length);
 }
 
-// Szűréskor mindig visszaugorunk az 1. oldalra
 ['#f-q','#f-cat','#f-lang','#f-img','#f-desc','#f-sort'].forEach(s=>$(s).addEventListener('input', ()=>{
   currentTplPage = 1;
   renderTpls();
 }));
 
-// Lapozó gombok eseménykezelése
 $('#tpl-pagination').addEventListener('click', e => {
   const btn = e.target.closest('[data-page-btn]');
   if (!btn || btn.disabled) return;
@@ -1202,7 +1197,7 @@ $('#upload-form').addEventListener('submit', async e=>{
   try {
     const [fileBase64, imgBase64] = await Promise.all([readAs(file), imgF ? shrinkImage(imgF) : '']);
     saveBtn.textContent = t('u.sending');
-    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
+    const category = $('#u-newcat').value.trim() \vert{}\vert{} $('#u-cat').value;
     const description = $('#u-desc').value.trim();
     const language = uLang.dataset.value || defaultUpLang();
     const guide = $('#u-guide').value.trim();
