@@ -10,8 +10,6 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4135085093423612"
      crossorigin="anonymous"></script>
 <meta name="description" content="Közösségi tér Excel-rajongóknak: ingyenesen letölthető Excel sablonok használati útmutatókkal, saját sablonok megosztása, ötletbörze. Regisztráció nélkül.">
-<!-- Link-előnézet (üzenetküldők, közösségi oldalak): a logó képként jelenik meg a megosztott link mellett.
-     FIGYELEM: az og:image és a twitter:image címében az AZ-OLDALAD.hu helyére a saját domained kerüljön (teljes, https-es cím kell), és az og-image.png fájl legyen az index.html mellett. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="EzExcel">
 <meta property="og:title" content="EzExcel – Közösségi Tér és Sablonok">
@@ -28,10 +26,8 @@
 <meta name="twitter:description" content="Ingyenes Excel sablonok, használati útmutatók és közösségi ötletbörze – regisztráció nélkül.">
 <meta name="twitter:image" content="https://ezexcel.hu/og-image.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<!-- Favicon (a fejléc logó SVG kódja alapján) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><rect width='30' height='30' rx='4' fill='%230E7C6B'/><rect x='2' y='2' width='26' height='26' rx='3' fill='none' stroke='%23fff' stroke-width='2'/><path d='M2 10.5h26M2 19.5h26M10.5 2v26M19.5 2v26' stroke='%23fff' stroke-width='1.4' opacity='.55'/><rect x='10.5' y='10.5' width='9' height='9' fill='none' stroke='%23fff' stroke-width='2.4'/><rect x='17' y='17' width='5' height='5' fill='%23fff' stroke='%230E7C6B' stroke-width='1'/></svg>">
 <script>
-/* A sablonlista letöltése azonnal elindul – nem várja meg a betűtípusokat és a fő szkriptet. */
 window.EZX_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwCHRxkxU-gHYBwwvxe8hXRO41CgfzO7x1AO7Donr3P9TI9cVUJxTDXApe2YMNkpnXY/exec";
 try { window.__EZX_TPL = fetch(window.EZX_SCRIPT_URL).then(function(r){ return r.json(); }); window.__EZX_TPL.catch(function(){}); } catch(e) {}
 </script>
@@ -70,7 +66,6 @@ button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--green-sel);outline-offset:2px}
 a{color:var(--green)}
 
-/* ---------- Title bar + ribbon ---------- */
 .titlebar{background:var(--green);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800;font-size:18px;letter-spacing:-.01em}
 .logo-mark{width:30px;height:30px;display:block;flex:0 0 auto}
@@ -85,7 +80,6 @@ a{color:var(--green)}
 .ribbon a:hover{opacity:1;background:rgba(255,255,255,.08)}
 .ribbon a[aria-current="page"]{background:var(--paper);color:var(--green);opacity:1;font-weight:700}
 
-/* ---------- Formula bar ---------- */
 .fbar{display:flex;align-items:stretch;background:var(--paper);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
 .namebox{width:110px;padding:6px 10px;border-right:1px solid var(--line);color:var(--ink)}
 .fx{padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-style:italic;font-family:Georgia,serif}
@@ -94,7 +88,6 @@ a{color:var(--green)}
 .formula .str{color:#A8551B}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .formula .str{color:#E9A06B}}
 
-/* ---------- Sheet ---------- */
 .sheet{flex:1;display:grid;grid-template-columns:var(--gut) 1fr;grid-template-rows:var(--rh) 1fr;overflow:hidden;background:var(--paper)}
 .corner{background:var(--head);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
 .corner::after{content:"";position:absolute;right:4px;bottom:4px;border:0 solid transparent;border-width:0 0 10px 10px;border-bottom-color:var(--line)}
@@ -107,10 +100,9 @@ a{color:var(--green)}
 .cells{overflow:auto;position:relative;background-color:var(--paper);
   background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
   background-size:var(--cw) var(--rh);background-position:-1px -1px}
-.page{padding:calc(var(--rh)*2) calc(var(--cw)*.5) calc(var(--rh)*3);max-width:1100px}
+.page{padding:calc(var(--rh)*2) calc(var(--cw)*.5) calc(var(--rh)*3);max-width:1280px}
 .page[hidden]{display:none}
 
-/* ---------- Selection block ---------- */
 .block{background:var(--paper);border:1px solid var(--line);position:relative}
 .block.sel{border:2px solid var(--green-sel)}
 .block.sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
@@ -122,7 +114,6 @@ h2{font-size:20px;margin:0 0 14px;letter-spacing:-.01em}
 h3{font-size:18px;margin:6px 0 8px;letter-spacing:-.01em}
 .lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0}
 
-/* Home */
 .hero{margin-bottom:calc(var(--rh)*2)}
 .hero .block-b{padding:36px 36px 40px}
 .hero h1 .eq{color:var(--green);font-family:var(--mono);font-weight:500;margin-right:.1em}
@@ -134,7 +125,6 @@ h3{font-size:18px;margin:6px 0 8px;letter-spacing:-.01em}
 .go strong{display:block;font-size:19px;margin-bottom:4px}
 .go small{color:var(--muted);font-size:14px}
 
-/* Forms */
 .field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
 .field label{font-size:13px;font-weight:600;color:var(--muted)}
 input[type=text],select,textarea{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:2px;padding:8px 10px;min-height:38px}
@@ -147,7 +137,6 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .btn.ghost{background:transparent;color:var(--green);border:1px solid var(--line)}
 .btn.ghost:hover{border-color:var(--green);background:var(--green-lt)}
 
-/* Brainstorm */
 .bs-grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:calc(var(--rh)*1.5);align-items:start}
 @media (max-width:860px){.bs-grid{grid-template-columns:1fr}}
 .ideas{display:flex;flex-direction:column;gap:var(--rh)}
@@ -168,17 +157,21 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .cmt-form{display:flex;gap:8px}
 .cmt-form input{flex:1}
 
-/* Templates */
 .tpl-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:var(--rh)}
 .filters{display:grid;grid-template-columns:2fr repeat(5,1fr);gap:0;margin-bottom:var(--rh);border:1px solid var(--line);background:var(--paper)}
 .filters > *{border:0;border-right:1px solid var(--line);border-radius:0}
 .filters > *:last-child{border-right:0}
 .filters input,.filters select{min-height:40px}
 @media (max-width:1100px){.filters{grid-template-columns:1fr 1fr}.filters > *{border-bottom:1px solid var(--line)}.filters input{grid-column:1/-1}.filters > :last-child{grid-column:1/-1}}
-.tpl-list{--tpl-lines:3;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--rh)}
+
+/* ITT MÓDOSÍTVA: 4 oszlopos elrendezés nagy képernyőn */
+.tpl-list{--tpl-lines:3;display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:var(--rh)}
+@media (max-width: 1200px){.tpl-list{grid-template-columns:repeat(3, minmax(0, 1fr))}}
+@media (max-width: 900px){.tpl-list{grid-template-columns:repeat(2, minmax(0, 1fr))}}
+@media (max-width: 550px){.tpl-list{grid-template-columns:1fr}}
+
 .tpl{display:flex;flex-direction:column;cursor:pointer;transition:border-color .15s}
 .tpl:hover{border-color:var(--green-sel)}
-/* A kép abszolút pozícióval tölti ki a teljes képterületet – telefonon sem marad üres sáv fölötte */
 .tpl .thumb{position:relative;aspect-ratio:16/9;background-color:var(--canvas);display:flex;align-items:center;justify-content:center;text-align:center;padding:0 10px;border-bottom:1px solid var(--line);overflow:hidden;color:var(--muted);font-family:var(--mono);font-size:12px;
   background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:32px 14px}
 .tpl .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -186,13 +179,19 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .tpl h3{margin:6px 0 6px;font-size:17px;line-height:1.25;overflow-wrap:anywhere}
 .tpl h3 a{color:inherit;text-decoration:none}
 .tpl:hover h3 a,.tpl h3 a:focus-visible{color:var(--green)}
-/* A leírásból csak pár sor látszik, a vége "…" (a sorok számát a --tpl-lines változó adja) */
 .tpl p.tpl-desc{margin:0 0 14px;font-size:14px;line-height:1.45;color:var(--muted);display:-webkit-box;-webkit-line-clamp:var(--tpl-lines);-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
 .tpl .actions{margin-top:auto;padding-top:12px;border-top:1px solid var(--grid)}
+
+/* Oldalazó (Pagination) stílusok */
+.pagination{display:flex;justify-content:center;align-items:center;gap:6px;margin-top:calc(var(--rh)*1.5);margin-bottom:var(--rh);flex-wrap:wrap}
+.pagination button{background:var(--paper);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:3px;cursor:pointer;font-weight:600;min-height:36px}
+.pagination button:hover:not(:disabled){border-color:var(--green);color:var(--green)}
+.pagination button.active{background:var(--green);color:#fff;border-color:var(--green)}
+.pagination button:disabled{opacity:0.4;cursor:not-allowed}
+
 .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .tag.lg{display:inline-flex;align-items:center;gap:6px;background:var(--head);color:var(--ink)}
 .flag{width:20px;height:14px;object-fit:cover;border:1px solid rgba(0,0,0,.2);border-radius:2px;flex:none;display:inline-block}
-/* Nyelvválasztó (zászlókkal) */
 .lp{position:relative}
 .lp-btn{display:flex;align-items:center;gap:8px;width:100%;min-height:38px;padding:0 10px;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:2px;font:inherit;cursor:pointer;text-align:left}
 .lp-btn:focus-visible{outline:2px solid var(--green-sel);outline-offset:-1px}
@@ -204,13 +203,11 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .lp-list li{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer}
 .lp-list li:hover,.lp-list li:focus,.lp-list li[aria-selected=true]{background:var(--green-lt);outline:0}
 .empty{text-align:center;padding:48px 20px}
-/* Betöltés közbeni váz-csempék */
 .skel{pointer-events:none}
 .skel .thumb,.sk{background-image:linear-gradient(90deg,var(--head) 0,var(--grid) 50%,var(--head) 100%);background-size:200% 100%;animation:shim 1.3s linear infinite}
 .sk{display:block;height:12px;border-radius:2px;margin:0 0 12px}.sk.tag{width:70px;height:18px}.sk.h{width:70%;height:18px}.sk.s{width:45%}
 @keyframes shim{to{background-position:-200% 0}}
 @media (prefers-reduced-motion:reduce){.skel .thumb,.sk{animation:none}}
-/* Sablon profiloldal */
 .back{display:inline-flex;align-items:center;gap:6px;margin-bottom:var(--rh);color:var(--green);font-weight:600;text-decoration:none}
 .back:hover{text-decoration:underline}
 .tpl-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:calc(var(--rh)*1.5);align-items:start}
@@ -222,7 +219,6 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .tpl-title{margin:0;font-size:24px;line-height:1.2;overflow-wrap:anywhere}
 .tpl-full{margin:0;color:var(--muted);line-height:1.5;white-space:pre-line;overflow-wrap:anywhere}
 .tpl-aside .actions .btn{flex:1;text-align:center}
-/* Használati útmutató */
 .gd{margin-top:calc(var(--rh)*2);display:grid;gap:var(--rh)}
 .gd-h{margin:0;font-size:22px}
 .gd-note,.gd-none{color:var(--muted);margin:0}
@@ -258,7 +254,6 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .empty p{color:var(--muted);margin:0}
 .ad{margin-top:calc(var(--rh)*2);border:1px dashed var(--line);background:var(--canvas);color:var(--muted);text-align:center;padding:30px 12px;font-size:12px;letter-spacing:.04em}
 
-/* Dialog */
 dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(520px,calc(100% - 24px));box-shadow:0 18px 50px rgba(0,0,0,.28);border-radius:4px}
 dialog::backdrop{background:rgba(6,38,33,.45)}
 .dlg-h{background:var(--green);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
@@ -268,7 +263,6 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
 .dlg-f{display:flex;justify-content:flex-end;gap:8px;padding:0 20px 20px}
 .err{color:var(--danger);font-size:13px;min-height:1.2em;margin:0}
 
-/* Sheet tabs + status */
 .tabs{display:flex;align-items:stretch;background:var(--head);border-top:1px solid var(--line);font-size:13px;overflow-x:auto}
 .tabs .nav{padding:0 12px;color:var(--muted);display:flex;align-items:center;gap:10px}
 .tabs a{padding:6px 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--line);white-space:nowrap}
@@ -278,7 +272,6 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
 .status .sum{display:flex;gap:18px}
 .disclaimer{margin:0;padding:4px 14px 5px;font-size:11px;color:var(--muted);background:var(--head);border-top:1px solid var(--line)}
 
-/* Drag-select & typing */
 .drag-sel{position:absolute;left:0;top:0;width:0;height:0;border:2px solid var(--green-sel);background:color-mix(in srgb,var(--green-sel) 12%,transparent);pointer-events:none;z-index:4;opacity:0}
 .drag-sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
 .xcursor{position:absolute;left:0;top:0;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;z-index:5;opacity:0}
@@ -398,6 +391,7 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
         <select id="f-sort" data-i18n-aria="aria.sort"><option value="new" data-i18n="f.new"></option><option value="old" data-i18n="f.old"></option><option value="dl" data-i18n="f.dl"></option></select>
       </div>
       <div class="tpl-list" id="tpl-list"></div>
+      <div class="pagination" id="tpl-pagination"></div>
       </div>
       <div id="tpl-detail" hidden></div>
       <div class="ad" data-i18n="ad"></div>
@@ -514,7 +508,6 @@ const store = {
   set(k, v){ try{ localStorage.setItem('ezx:'+k, JSON.stringify(v)); return true; }catch(e){ return false; } }
 };
 
-/* ---------- Szótár / Dictionary ---------- */
 const I18N = {
  hu:{
   'aria.home':'EzExcel főoldal','aria.lang':'Nyelv','aria.nav':'Fő navigáció','aria.img':'Indexkép','aria.desc':'Leírás','aria.sort':'Rendezés','aria.close':'Bezárás',
@@ -684,14 +677,12 @@ if (!me){
   store.set('me', me);
 }
 
-/* Grid chrome */
 const cols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat('AA AB AC AD AE AF'.split(' '));
 $('#colhead').innerHTML = cols.map(c=>`<span>${c}</span>`).join('');
 let rows=''; for(let i=1;i<=400;i++) rows+=`<span>${i}</span>`; $('#rowhead').innerHTML = rows;
 const cells = $('#cells');
 cells.addEventListener('scroll', ()=>{ $('#colhead').scrollLeft = cells.scrollLeft; $('#rowhead').scrollTop = cells.scrollTop; });
 
-/* Routing */
 const pages = {
   home:{k:'home', ref:'A1', col:0, copy:'copy.home', nav:'nav.home'},
   brainstorming:{k:'brain', ref:'B2', col:1, copy:'copy.brain', nav:'nav.brain'},
@@ -722,7 +713,6 @@ function route(){
 }
 window.addEventListener('hashchange', route);
 
-/* Brainstorming */
 const now = Date.now(), H = 3600e3;
 let ideas = store.get('ideas', null) || [{
   id:'i1', author:'Kreatív Elemző #421', t: now-3*H, cat:'Pénzügy & Budget',
@@ -781,7 +771,6 @@ $('#ideas').addEventListener('submit', e=>{
   ideas.find(x=>x.id===f.dataset.cform).comments.push({id:'c'+Date.now(), author:me, t:Date.now(), body:txt, votes:0});
   saveIdeas(); renderIdeas(); updateSum('brainstorming'); toast(t('toast.cmt'));
 });
-// Új ötlet beküldése a weboldalról
 $('#idea-form').addEventListener('submit', async e => {
   e.preventDefault();
   const title = $('#i-title').value.trim(), body = $('#i-body').value.trim();
@@ -799,7 +788,6 @@ $('#idea-form').addEventListener('submit', async e => {
     comments: []
   };
 
-  // 1. Megjelenítjük helyben az felületen azonnal
   ideas.unshift(newIdea);
   saveIdeas();
   renderIdeas();
@@ -808,7 +796,6 @@ $('#idea-form').addEventListener('submit', async e => {
   updateSum('brainstorming');
   toast(t('toast.idea'));
 
-  // 2. Elküldjük a Google Drive-ra az adathalmazt
   if (SCRIPT_URL) {
     try {
       await fetch(SCRIPT_URL, {
@@ -822,13 +809,8 @@ $('#idea-form').addEventListener('submit', async e => {
   }
 });
 
-/* ---------- Google Drive Integration & Templates ---------- */
-// A GOOGLE APPS SCRIPT WEB APP URL-je a <head>-ben van (window.EZX_SCRIPT_URL), hogy a letöltés már az oldal elején elinduljon.
 const SCRIPT_URL = window.EZX_SCRIPT_URL;
 
-// Az utoljára ismert lista azonnal megjelenik (stale-while-revalidate), a friss adat a háttérben érkezik.
-// A nyelv és a használati útmutató a leírás végére csomagolva is utazhat ("[[ezx:{...}]]"), így a Google Apps Script módosítása nélkül is mentődik.
-// Ha a szkript később külön "lang" / "guide" mezőt ad vissza, azokat részesítjük előnyben.
 const EZX_RE = /\n*\[\[ezx:([\s\S]*)\]\]\s*$/;
 function normTpl(x){
   let desc = String(x.desc || ''), lg = x.lang, guide = x.guide;
@@ -843,9 +825,13 @@ const tplRaw0 = store.get('tplcache', null) || [];
 let lastRaw = JSON.stringify(tplRaw0);
 let tpls = tplRaw0.map(normTpl);
 let tplsLoaded = tpls.length > 0, tplsLoading = false, tplFetchedAt = 0, tplInflight = null, detailId = null, lastDetailKey = '';
+
+// Pagination state
+let currentTplPage = 1;
+const tplsPerPage = 12; // 4 oszlop esetén pl. 12 vagy 16 elem oldalanként szép gridet ad
+
 const saveTpls = () => store.set('tpls', tpls);
 
-/* ---------- Nyelvek + zászlók (beágyazott SVG, minden eszközön egyformán látszik) ---------- */
 const LANGS = [['hu','Magyar'],['en','English'],['de','Deutsch'],['fr','Français'],['es','Español'],['it','Italiano'],['pt','Português'],['nl','Nederlands'],
   ['pl','Polski'],['ro','Română'],['sk','Slovenčina'],['cs','Čeština'],['hr','Hrvatski'],['sr','Srpski'],['uk','Українська'],['tr','Türkçe'],['sv','Svenska']];
 const FLAG = {
@@ -871,9 +857,8 @@ const FLAG = {
 const _fu = {};
 const flagImg = c => `<img class="flag" alt="" src="${_fu[c] || (_fu[c] = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 20">${FLAG[c] || FLAG.any}</svg>`))}">`;
 const langName = c => c === 'any' ? t('lang.any') : (LANGS.find(l => l[0] === c) || [c, String(c).toUpperCase()])[1];
-const lgOf = x => String((x && x.lang) || 'hu').toLowerCase();       // a régi (nyelv nélküli) sablonok magyarnak számítanak
+const lgOf = x => String((x && x.lang) || 'hu').toLowerCase();
 
-// Legördülő nyelvválasztó zászlókkal (a feltöltő ablakban és a szűrőben is ez van)
 function langPicker(el, opts){
   el.classList.add('lp');
   el.dataset.value = opts.value || '';
@@ -911,7 +896,6 @@ const defaultUpLang = () => lang === 'hu' ? 'hu' : 'en';
 uLang.setItems([...LANGS.map(l => l[0]), 'any']); uLang.setValue(defaultUpLang());
 fLang.setItems(['']);
 
-// A Drive-képeket a gyorsabb, gyorsítótárazott googleusercontent szerverről kérjük (hiba esetén visszaesik az eredeti linkre).
 function fastImg(u, w){
   if (!u || /^data:|^blob:/.test(u)) return u;
   if (!/drive\.google\.com|googleusercontent\.com/.test(u)) return u;
@@ -923,7 +907,6 @@ document.addEventListener('error', e => {
   if (i && i.tagName === 'IMG' && i.dataset.orig && i.getAttribute('src') !== i.dataset.orig){ i.src = i.dataset.orig; }
 }, true);
 
-// Sablonok élő betöltése Google Drive-ból (gyorsítótárral, párhuzamos kérések nélkül)
 function loadTplsFromDrive(force){
   if (!SCRIPT_URL){
     tpls = store.get('tpls', []).map(normTpl); tplsLoaded = true;
@@ -933,7 +916,7 @@ function loadTplsFromDrive(force){
   if (tplInflight) return tplInflight;
   if (!force && tplsLoaded && tplFetchedAt && Date.now() - tplFetchedAt < 45000) return Promise.resolve();
   tplsLoading = true;
-  if (!tpls.length){ renderTpls(); renderTplView(); }       // váz-csempék, amíg nincs adat
+  if (!tpls.length){ renderTpls(); renderTplView(); }
   const req = window.__EZX_TPL || fetch(SCRIPT_URL).then(r => r.json());
   window.__EZX_TPL = null;
   tplInflight = (async () => {
@@ -976,7 +959,6 @@ function renderCats(){
   const cats = [...new Set(tpls.map(x=>x.cat))].sort((a,b)=>cat(a).localeCompare(cat(b), lang));
   sel.innerHTML = `<option value="">${esc(t('f.allcat'))}</option>` + cats.map(c=>`<option value="${esc(c)}">${esc(cat(c))}</option>`).join('');
   sel.value = cats.includes(cur) ? cur : '';
-  // A nyelvszűrőben csak azok a nyelvek szerepelnek, amelyeken van sablon
   const present = new Set(tpls.map(lgOf));
   fLang.setItems(['', ...LANGS.map(l => l[0]).filter(c => present.has(c)), ...(present.has('any') ? ['any'] : []), ...[...present].filter(c => c !== 'any' && !LANGS.some(l => l[0] === c))]);
   uLang.refresh();
@@ -985,40 +967,78 @@ function renderCats(){
 function renderTpls(){
   const q=$('#f-q').value.trim().toLowerCase(), fc=$('#f-cat').value, fl=fLang.dataset.value, img=$('#f-img').value, desc=$('#f-desc').value, sort=$('#f-sort').value;
   if (tplsLoading && !tpls.length){
-    $('#tpl-list').innerHTML = Array(6).fill(`<article class="block tpl skel" aria-hidden="true"><div class="thumb"></div><div class="block-b"><span class="sk tag"></span><span class="sk h"></span><span class="sk"></span><span class="sk s"></span></div></article>`).join('');
+    $('#tpl-list').innerHTML = Array(8).fill(`<article class="block tpl skel" aria-hidden="true"><div class="thumb"></div><div class="block-b"><span class="sk tag"></span><span class="sk h"></span><span class="sk"></span><span class="sk s"></span></div></article>`).join('');
+    $('#tpl-pagination').innerHTML = '';
     return;
   }
   let list = tpls.filter(x =>
     (!q || x.name.toLowerCase().includes(q)) && (!fc || x.cat===fc) &&
-    (!fl || lgOf(x)===fl || (lgOf(x)==='any' && fl!=='any')) &&              // a nyelvfüggetlen sablon minden nyelvnél megjelenik
+    (!fl || lgOf(x)===fl || (lgOf(x)==='any' && fl!=='any')) &&
     (img==='' || (!!x.img)===(img==='1')) && (desc==='' || (!!x.desc)===(desc==='1')));
   list.sort((a,b)=> sort==='old' ? a.t-b.t : sort==='dl' ? b.dl-a.dl : b.t-a.t);
+
+  // Lapozás számítása
+  const totalPages = Math.ceil(list.length / tplsPerPage) || 1;
+  if (currentTplPage > totalPages) currentTplPage = totalPages;
+  if (currentTplPage < 1) currentTplPage = 1;
+
+  const startIdx = (currentTplPage - 1) * tplsPerPage;
+  const pageItems = list.slice(startIdx, startIdx + tplsPerPage);
+
   if (!list.length){
     $('#tpl-list').innerHTML = `<div class="block empty" style="grid-column:1/-1">
       <div class="big">#N/A</div>
       <h3>${t('empty.h')}</h3>
       <p>${t('empty.p1')}<a href="#brainstorming">${t('empty.link')}</a>${t('empty.p2')}</p></div>`;
+    $('#tpl-pagination').innerHTML = '';
   } else {
-    $('#tpl-list').innerHTML = list.map((x,i)=>`
+    $('#tpl-list').innerHTML = pageItems.map((x,i)=>`
       <article class="block tpl" data-id="${esc(x.id)}">
         <div class="thumb">${x.img ? `<img src="${esc(fastImg(x.img,720))}" data-orig="${esc(x.img)}" alt="${esc(x.name)}${t('preview')}" ${i<4?'':'loading="lazy"'} decoding="async">` : esc(x.fileName)}</div>
         <div class="block-b">
           <div class="tags"><span class="tag">${esc(cat(x.cat))}</span><span class="tag lg" title="${esc(langName(lgOf(x)))}">${flagImg(lgOf(x))}${lgOf(x)==='any' ? '' : esc(lgOf(x).toUpperCase())}</span></div>
           <h3><a href="#templates/${encodeURIComponent(x.id)}">${esc(x.name)}</a></h3>${x.desc ? `<p class="tpl-desc">${esc(x.desc)}</p>` : ''}
           <div class="actions">
-            <!-- KÖZVETLEN LETÖLTÉSI LINK A DRIVE-BÓL -->
             <a class="btn" href="${esc(x.file)}" download="${esc(x.fileName)}" data-dl="${esc(x.id)}" style="text-decoration:none">${t('download')}</a>
             <span class="meta">⬇ ${x.dl} ·${ago(x.t)}</span>
           </div>
         </div>
       </article>`).join('');
+
+    // Lapozó gombok kirajzolása
+    if (totalPages > 1) {
+      let pagesHtml = `<button type="button" data-page-btn="${currentTplPage - 1}" ${currentTplPage === 1 ? 'disabled' : ''}>« Előző</button>`;
+      for (let p = 1; p <= totalPages; p++) {
+        if (p === 1 || p === totalPages || (p >= currentTplPage - 1 && p <= currentTplPage + 1)) {
+          pagesHtml += `<button type="button" class="${p === currentTplPage ? 'active' : ''}" data-page-btn="${p}">${p}</button>`;
+        } else if (p === currentTplPage - 2 || p === currentTplPage + 2) {
+          pagesHtml += `<span>...</span>`;
+        }
+      }
+      pagesHtml += `<button type="button" data-page-btn="${currentTplPage + 1}" ${currentTplPage === totalPages ? 'disabled' : ''}>Következő »</button>`;
+      $('#tpl-pagination').innerHTML = pagesHtml;
+    } else {
+      $('#tpl-pagination').innerHTML = '';
+    }
   }
   updateSum('templates', list.length);
 }
 
-['#f-q','#f-cat','#f-lang','#f-img','#f-desc','#f-sort'].forEach(s=>$(s).addEventListener('input', renderTpls));
+// Szűréskor mindig visszaugorunk az 1. oldalra
+['#f-q','#f-cat','#f-lang','#f-img','#f-desc','#f-sort'].forEach(s=>$(s).addEventListener('input', ()=>{
+  currentTplPage = 1;
+  renderTpls();
+}));
 
-// Letöltésszámláló (a csempén és a profiloldalon is)
+// Lapozó gombok eseménykezelése
+$('#tpl-pagination').addEventListener('click', e => {
+  const btn = e.target.closest('[data-page-btn]');
+  if (!btn || btn.disabled) return;
+  currentTplPage = parseInt(btn.dataset.pageBtn, 10);
+  renderTpls();
+  $('#page-templates').scrollIntoView({ behavior: 'smooth' });
+});
+
 function countDl(id){
   const x = tpls.find(y=>String(y.id)===String(id));
   if (!x) return;
@@ -1028,7 +1048,6 @@ function countDl(id){
   } else saveTpls();
   setTimeout(()=>{ renderTpls(); const m = $('#tpl-dl-meta'); if (m) m.textContent = `⬇ ${x.dl} ·${ago(x.t)}`; }, 50);
 }
-// Csempére kattintva megnyílik a sablon profiloldala
 $('#tpl-list').addEventListener('click', e=>{
   const a = e.target.closest('[data-dl]');
   if (a){ countDl(a.dataset.dl); return; }
@@ -1045,8 +1064,6 @@ $('#tpl-detail').addEventListener('click', e=>{
   }
 });
 
-/* ---------- Sablon profiloldal + használati útmutató ---------- */
-// Az útmutatók a guides/ mappában vannak (index.json + sablononként egy kis JSON: szöveg + tömörített képek).
 const nrm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 let guideIdx = null; const guideCache = {};
 async function findGuideId(x){
@@ -1061,7 +1078,6 @@ async function loadGuide(x){
   if (guideCache[id]) return guideCache[id];
   try { const g = await (await fetch('guides/' + encodeURIComponent(id) + '.json')).json(); guideCache[id] = g; return g; } catch(e){ return null; }
 }
-// Egyszerű, biztonságos (HTML-escape-elt) formázás: ## cím, ### alcím, - felsorolás, 1. lépések, **félkövér**, `kód`
 function mdHtml(src){
   const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
   const out = []; let list = null;
@@ -1111,7 +1127,7 @@ function renderTplView(){
     return;
   }
   const key = [x.id, x.name, x.cat, x.desc, x.img, x.file, lgOf(x), lang, x.guideText].join('|');
-  if (key === lastDetailKey) return;           // háttérfrissítésnél ne villogjon az oldal
+  if (key === lastDetailKey) return;
   lastDetailKey = key;
   document.title = 'EzExcel - ' + x.name;
   dv.innerHTML = `${back}
@@ -1133,14 +1149,12 @@ function renderTplView(){
     </div>
     <section class="gd" id="tpl-guide"><div class="block"><div class="block-b"><span class="sk h"></span><span class="sk"></span><span class="sk s"></span></div></div></section>`;
   const done = html => { if (detailId === String(x.id)){ const el = $('#tpl-guide'); if (el) el.innerHTML = html; } };
-  if (x.guideText) done(authoredGuideHtml(x.guideText));      // a feltöltő által írt útmutató
-  else loadGuide(x).then(g => done(guideHtml(g)));            // a 10 alap sablon beépített útmutatója (guides/ mappa)
+  if (x.guideText) done(authoredGuideHtml(x.guideText));
+  else loadGuide(x).then(g => done(guideHtml(g)));
 }
 
-// Új sablon feltöltése a Google Drive-ba
 const dlg = $('#upload');
 $('#open-upload').addEventListener('click', ()=>{ $('#u-err').textContent=''; uLang.setValue(defaultUpLang()); guideShow(false); guideCount(); dlg.showModal(); });
-// Útmutató-szerkesztő a feltöltő ablakban
 const GUIDE_MAX = 8000;
 const guideTa = $('#u-guide'), guideView = $('#u-guide-view'), guidePrev = $('#u-guide-prev');
 const guideSample = () => lang === 'hu'
@@ -1160,7 +1174,6 @@ $('#u-guide-sample').addEventListener('click', () => {
   guideShow(false); guideTa.value = guideSample(); guideCount(); guideTa.focus();
 });
 const readAs = f => new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(f); });
-// Az indexképet feltöltés előtt kisebbre (max. 1000 px, JPEG) tömörítjük: telefonos fotónál több MB helyett pár 100 KB megy fel.
 async function shrinkImage(f, maxW=1000, q=0.82){
   if (f.size < 180e3 && /jpe?g|webp/.test(f.type)) return readAs(f);
   try {
@@ -1189,11 +1202,10 @@ $('#upload-form').addEventListener('submit', async e=>{
   try {
     const [fileBase64, imgBase64] = await Promise.all([readAs(file), imgF ? shrinkImage(imgF) : '']);
     saveBtn.textContent = t('u.sending');
-    const category = $('#u-newcat').value.trim() || $('#u-cat').value;
+    const category = $('#u-newcat').value.trim() \vert{}\vert{} $('#u-cat').value;
     const description = $('#u-desc').value.trim();
     const language = uLang.dataset.value || defaultUpLang();
     const guide = $('#u-guide').value.trim();
-    // Biztos út: a nyelv és az útmutató a leíráshoz csomagolva megy (a jelenlegi szkript is elmenti); a külön mezőket a jövőbeli szkript használhatja.
     const packed = description + '\n\n[[ezx:' + JSON.stringify(guide ? { l: language, g: guide } : { l: language }) + ']]';
 
     if (SCRIPT_URL) {
@@ -1216,7 +1228,7 @@ $('#upload-form').addEventListener('submit', async e=>{
       if (result.status === 'error') {
         throw new Error(result.message);
       }
-      loadTplsFromDrive(true);   // a lista a háttérben frissül – a párbeszédablak azonnal bezárul
+      loadTplsFromDrive(true);
     } else {
       const x = { id:'t'+Date.now(), name, cat: category, lang: language, desc: description, guide: guide,
         file: fileBase64, fileName:file.name, img: imgBase64, t:Date.now(), dl:0 };
@@ -1238,7 +1250,6 @@ $('#upload-form').addEventListener('submit', async e=>{
   }
 });
 
-/* Status bar */
 function updateSum(key, shown){
   const s = $('#sum');
   if (key !== current) return;
@@ -1251,7 +1262,6 @@ function updateSum(key, shown){
   } else s.innerHTML = `<span>${t('st.ready')}</span>`;
 }
 
-/* Intro animation */
 const intro = {done:false, running:false, cancel:null};
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
 const colName = i => cols[i] || ('C'+(i+1));
