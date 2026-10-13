@@ -252,6 +252,9 @@ input[type=file]{font-size:14px;padding:8px;border:1px dashed var(--line);width:
 .gd-steps span{color:var(--muted);font-size:14px}
 .empty .big{font-family:var(--mono);font-size:34px;color:var(--danger);font-weight:500;margin-bottom:8px}
 .empty p{color:var(--muted);margin:0}
+.ad-wrap{margin-top:calc(var(--rh)*2);text-align:center;overflow:hidden}
+.ad-wrap[hidden]{display:none}
+.ad-wrap .ad-label{display:block;color:var(--muted);font-size:11px;letter-spacing:.06em;margin-bottom:6px}
 .ad{margin-top:calc(var(--rh)*2);border:1px dashed var(--line);background:var(--canvas);color:var(--muted);text-align:center;padding:30px 12px;font-size:12px;letter-spacing:.04em}
 
 dialog{border:0;padding:0;background:var(--paper);color:var(--ink);width:min(520px,calc(100% - 24px));box-shadow:0 18px 50px rgba(0,0,0,.28);border-radius:4px}
@@ -394,16 +397,8 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
       <div class="pagination" id="tpl-pagination"></div>
       </div>
       <div id="tpl-detail" hidden></div>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4135085093423612"
-     crossorigin="anonymous"></script>
-     <!-- sablon -->
-     <ins class="adsbygoogle"
-          style="display:inline-block;width:728px;height:90px"
-          data-ad-client="ca-pub-4135085093423612"
-          data-ad-slot="1089054026"></ins>
-     <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-     </script>
+      <!-- Hirdetés: a tárolót a script tölti fel a sablonoldal megnyitásakor (mountAd) -->
+      <div class="ad-wrap" id="ad-tpl" hidden></div>
     </section>
 
     <!-- Rólunk -->
@@ -701,6 +696,38 @@ const pages = {
   contact:{k:'contact', ref:'F6', col:5, copy:'copy.home', nav:'nav.contact'}
 };
 let current = null;
+/* ---------- Hirdetés (Google AdSense) ---------- */
+// Az egység csak akkor kérhet hirdetést, ha látható (nem nulla szélességű). Mivel az oldal lapjai rejtve vannak, a hirdetést
+// a sablonoldal megnyitásakor hozzuk létre. Egy megnyitás (lista vagy sablon profiloldal) = egy hirdetéskérés.
+// FIX méretű egységnél (pl. 728x90) telefonon nem jelenik meg hirdetés. Mobilra hozz létre az AdSense-ben RESZPONZÍV
+// megjelenítési egységet, írd be az új slot azonosítót ide, és állítsd a fixed értéket null-ra.
+const ADS = { client: 'ca-pub-4135085093423612', slot: '1089054026', fixed: { w: 728, h: 90 }, minGapMs: 20000 };
+window.EZX_ADS = ADS;     // (tesztelés / hibakeresés: a konzolban is elérhető)
+let adKey = '', adAt = 0;
+function mountAd(){
+  const host = document.getElementById('ad-tpl');
+  if (!host || !ADS.client || !ADS.slot) return;
+  if (adKey === location.hash) return;                       // ugyanaz a nézet: nem kérünk újat
+  if (Date.now() - adAt < ADS.minGapMs && host.firstChild){ adKey = location.hash; return; }   // gyors oda-vissza lapozásnál marad a régi
+  adKey = location.hash;
+  host.innerHTML = ''; host.hidden = false;
+  const avail = host.clientWidth || (host.parentElement ? host.parentElement.clientWidth : 0);
+  if (!avail || (ADS.fixed && avail < ADS.fixed.w)){ host.hidden = true; return; }
+  const ins = document.createElement('ins');
+  ins.className = 'adsbygoogle';
+  ins.style.cssText = ADS.fixed ? `display:inline-block;width:${ADS.fixed.w}px;height:${ADS.fixed.h}px` : 'display:block';
+  ins.setAttribute('data-ad-client', ADS.client);
+  ins.setAttribute('data-ad-slot', ADS.slot);
+  if (!ADS.fixed){ ins.setAttribute('data-ad-format', 'auto'); ins.setAttribute('data-full-width-responsive', 'true'); }
+  host.innerHTML = `<span class="ad-label">${t('ad')}</span>`;
+  host.appendChild(ins);
+  adAt = Date.now();
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) { console.warn('AdSense:', e); }
+  // ha a Google nem tölt be hirdetést (pl. még nincs jóváhagyva), ne maradjon üres hely
+  new MutationObserver((m, o) => { if (ins.getAttribute('data-ad-status') === 'unfilled'){ host.hidden = true; o.disconnect(); } })
+    .observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+}
+
 function route(){
   const raw = location.hash.replace('#','') || 'home';
   const [p, sub] = raw.split('/');
@@ -717,7 +744,7 @@ function route(){
   if (current !== key || detailId !== newDetail) cells.scrollTop = 0;
   current = key; detailId = newDetail;
   updateSum(key);
-  if (key==='templates'){ renderTplView(); loadTplsFromDrive(); }
+  if (key==='templates'){ renderTplView(); loadTplsFromDrive(); mountAd(); } else { adKey = ''; }
   if (key==='home') requestAnimationFrame(()=>requestAnimationFrame(playIntro));
 }
 window.addEventListener('hashchange', route);
