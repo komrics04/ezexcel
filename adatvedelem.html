@@ -2,131 +2,260 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E7C6B">
 <meta name="robots" content="index,follow">
 <title>Adatvédelmi nyilatkozat – EzExcel</title>
 <meta name="description" content="Az EzExcel adatvédelmi és süti-tájékoztatója: milyen adatokat kezelünk, hogyan használja a Google AdSense a sütiket, és hogyan élhetsz a jogaiddal.">
 <!-- Ezen az oldalon szándékosan nincs hirdetési kód, elemző szkript és külső betöltés (a Google EU-s hozzájárulási szabályzata szerint az adatvédelmi oldalon nem lehet hirdetési címke). -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><rect width='30' height='30' rx='4' fill='%230E7C6B'/><rect x='2' y='2' width='26' height='26' rx='3' fill='none' stroke='%23fff' stroke-width='2'/><path d='M2 10.5h26M2 19.5h26M10.5 2v26M19.5 2v26' stroke='%23fff' stroke-width='1.4' opacity='.55'/><rect x='10.5' y='10.5' width='9' height='9' fill='none' stroke='%23fff' stroke-width='2.4'/><rect x='17' y='17' width='5' height='5' fill='%23fff' stroke='%230E7C6B' stroke-width='1'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--green:#0E7C6B;--green-dk:#095A4E;--ink:#1F2A22;--muted:#5E6B62;--line:#C9CEC9;--paper:#fff;--canvas:#F3F5F3;--lt:#DFF2EE}
-@media (prefers-color-scheme:dark){:root{--ink:#E6ECE7;--muted:#A5B0A8;--line:#3A443D;--paper:#161B17;--canvas:#101411;--lt:#173A33}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
-header{background:var(--green);color:#fff}
-.bar{max-width:860px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:20px}
-.brand svg{width:30px;height:30px}
-.sp{flex:1}
-.lang{display:flex;border:1px solid rgba(255,255,255,.6);border-radius:3px;overflow:hidden}
-.lang button{background:transparent;color:#fff;border:0;padding:6px 12px;font:inherit;font-weight:700;cursor:pointer}
-.lang button[aria-pressed=true]{background:#fff;color:var(--green-dk)}
-main{max-width:860px;margin:24px auto;padding:0 20px 40px}
-article{background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--green);padding:28px 30px}
-h1{margin:0 0 4px;font-size:28px;line-height:1.2}
-h2{margin:28px 0 8px;font-size:19px;color:var(--green-dk)}
-@media (prefers-color-scheme:dark){h2{color:#7FE3C9}}
+:root{
+  --green:#0E7C6B; --green-dk:#095A4E; --green-lt:#DFF2EE; --green-sel:#14A38B;
+  --paper:#FFFFFF; --canvas:#F7F8F7; --head:#EEF0EE; --grid:#E0E3E0; --line:#C9CEC9;
+  --ink:#1F2A22; --muted:#5E6B62; --note:#FFF3B0; --note-line:#E8D36A; --danger:#B3261E;
+  --ui:"Archivo", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", Consolas, "Courier New", monospace;
+  --cw:96px; --rh:26px; --gut:44px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --green:#2BB39C; --green-dk:#1B7F6F; --green-lt:#183330; --green-sel:#3CCFB5;
+    --paper:#1C211E; --canvas:#161A17; --head:#232924; --grid:#2A312C; --line:#3A433D;
+    --ink:#E6ECE7; --muted:#9AA79E; --note:#4A4320; --note-line:#7A6C2A;
+  }
+}
+:root[data-theme="dark"]{
+  --green:#2BB39C; --green-dk:#1B7F6F; --green-lt:#183330; --green-sel:#3CCFB5;
+  --paper:#1C211E; --canvas:#161A17; --head:#232924; --grid:#2A312C; --line:#3A433D;
+  --ink:#E6ECE7; --muted:#9AA79E; --note:#4A4320; --note-line:#7A6C2A;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;height:100%;font-family:var(--ui);color:var(--ink);background:var(--canvas);display:flex;flex-direction:column;font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--green-sel);outline-offset:2px}
+a{color:var(--green)}
+
+.titlebar{background:var(--green);color:#fff;display:flex;align-items:center;gap:14px;padding:8px 16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:800;font-size:18px;letter-spacing:-.01em}
+.logo-mark{width:30px;height:30px;display:block;flex:0 0 auto}
+.titlebar .doc{opacity:.85;font-size:13px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{display:flex;border:1px solid rgba(255,255,255,.55);border-radius:3px;overflow:hidden;flex:0 0 auto}
+.lang button{background:transparent;border:0;color:#fff;padding:3px 10px;font-size:12px;font-weight:700;cursor:pointer;opacity:.8}
+.lang button:hover{opacity:1}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--green-dk);opacity:1}
+@media (max-width:640px){.titlebar .doc{display:none}.lang{margin-left:auto}}
+.ribbon{background:var(--green-dk);display:flex;gap:2px;padding:0 10px;overflow-x:auto}
+.ribbon a{color:#fff;text-decoration:none;padding:9px 16px 8px;font-size:14px;font-weight:500;border-radius:6px 6px 0 0;white-space:nowrap;opacity:.85}
+.ribbon a:hover{opacity:1;background:rgba(255,255,255,.08)}
+.ribbon a[aria-current="page"]{background:var(--paper);color:var(--green);opacity:1;font-weight:700}
+
+.fbar{display:flex;align-items:stretch;background:var(--paper);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.namebox{width:110px;padding:6px 10px;border-right:1px solid var(--line);color:var(--ink)}
+.fx{padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-style:italic;font-family:Georgia,serif}
+.formula{padding:6px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;color:var(--ink)}
+.formula .fn{color:var(--green);font-weight:500}
+.formula .str{color:#A8551B}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .formula .str{color:#E9A06B}}
+
+.sheet{flex:1;display:grid;grid-template-columns:var(--gut) 1fr;grid-template-rows:var(--rh) 1fr;overflow:hidden;background:var(--paper)}
+.corner{background:var(--head);border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative}
+.corner::after{content:"";position:absolute;right:4px;bottom:4px;border:0 solid transparent;border-width:0 0 10px 10px;border-bottom-color:var(--line)}
+.colhead,.rowhead{background:var(--head);color:var(--muted);font-size:12px;overflow:hidden;user-select:none}
+.colhead{display:flex;border-bottom:1px solid var(--line)}
+.colhead span{flex:0 0 var(--cw);text-align:center;line-height:var(--rh);border-right:1px solid var(--grid)}
+.colhead span.on{background:var(--green-lt);color:var(--green);font-weight:700;box-shadow:inset 0 -2px 0 var(--green)}
+.rowhead{border-right:1px solid var(--line)}
+.rowhead span{display:block;height:var(--rh);line-height:var(--rh);text-align:center;border-bottom:1px solid var(--grid)}
+.cells{overflow:auto;position:relative;background-color:var(--paper);
+  background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
+  background-size:var(--cw) var(--rh);background-position:-1px -1px}
+.page{padding:calc(var(--rh)*2) calc(var(--cw)*.5) calc(var(--rh)*3);max-width:1280px}
+
+.block{background:var(--paper);border:1px solid var(--line);position:relative}
+.block.sel{border:2px solid var(--green-sel)}
+.block.sel::after{content:"";position:absolute;right:-5px;bottom:-5px;width:8px;height:8px;background:var(--green-sel);border:1.5px solid var(--paper)}
+.block-h{background:var(--head);border-bottom:1px solid var(--line);padding:4px 12px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;font-family:var(--mono)}
+.block-b{padding:28px 30px}
+
+h1{font-size:clamp(24px,4vw,36px);line-height:1.15;letter-spacing:-.02em;font-weight:800;margin:0 0 12px}
+h2{font-size:19px;margin:28px 0 8px;letter-spacing:-.01em;color:var(--green-dk)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h2{color:#7FE3C9}}
 p,li{margin:0 0 10px}
 ul{padding-left:22px;margin:0 0 10px}
 a{color:var(--green)}
-.meta{color:var(--muted);margin-bottom:12px}
-.back{display:inline-block;margin:0 0 14px;font-weight:600}
-.note{background:var(--lt);border-left:4px solid var(--green);padding:10px 14px;margin:12px 0}
-footer{max-width:860px;margin:0 auto;padding:0 20px 30px;color:var(--muted);font-size:13px}
-[hidden]{display:none!important}
+.meta{color:var(--muted);margin-bottom:16px;font-size:14px}
+.back{display:inline-flex;align-items:center;gap:6px;margin:0 0 16px;font-weight:600;text-decoration:none}
+.back:hover{text-decoration:underline}
+.note{background:var(--note);border-left:4px solid var(--note-line);color:var(--ink);padding:12px 16px;margin:16px 0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .note{background:var(--note);border-color:var(--note-line)}}
+
+footer{background:var(--paper);border-top:1px solid var(--line)}
+.tabs{display:flex;align-items:stretch;background:var(--head);border-top:1px solid var(--line);font-size:13px;overflow-x:auto}
+.tabs .nav{padding:0 12px;color:var(--muted);display:flex;align-items:center;gap:10px}
+.tabs a{padding:6px 18px;text-decoration:none;color:var(--ink);border-right:1px solid var(--line);white-space:nowrap}
+.tabs a:hover{background:var(--paper)}
+.tabs a[aria-current="page"]{background:var(--paper);color:var(--green);font-weight:700;box-shadow:inset 0 -3px 0 var(--green)}
+.status{display:flex;gap:18px;align-items:center;justify-content:space-between;background:var(--green);color:#fff;font-size:12px;padding:3px 14px;flex-wrap:wrap}
+.disclaimer{margin:0;padding:4px 14px 5px;font-size:11px;color:var(--muted);background:var(--head);border-top:1px solid var(--line)}
+
+@media (max-width:640px){
+  :root{--cw:72px;--gut:32px}
+  .page{padding:var(--rh) 14px calc(var(--rh)*2)}
+  .block-b{padding:20px 16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<header><div class="bar">
-  <a class="brand" href="/" aria-label="EzExcel – főoldal">
-    <svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M1 10.5h28M1 19.5h28M10.5 1v28M19.5 1v28" stroke="#fff" stroke-width="1.4" opacity=".55"/><rect x="10.5" y="10.5" width="9" height="9" fill="none" stroke="#fff" stroke-width="2.4"/><rect x="17" y="17" width="5" height="5" fill="#fff" stroke="#0E7C6B" stroke-width="1"/></svg>EzExcel
+
+<header class="titlebar">
+  <a class="logo" href="index.html#home" aria-label="EzExcel – főoldal">
+    <svg class="logo-mark" viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M1 10.5h28M1 19.5h28M10.5 1v28M19.5 1v28" stroke="#fff" stroke-width="1.4" opacity=".55"/><rect x="10.5" y="10.5" width="9" height="9" fill="none" stroke="#fff" stroke-width="2.4"/><rect x="17" y="17" width="5" height="5" fill="#fff" stroke="var(--green)" stroke-width="1"/></svg>EzExcel
   </a>
-  <span class="sp"></span>
-  <div class="lang" role="group" aria-label="Language"><button type="button" data-lang="hu">HU</button><button type="button" data-lang="en">EN</button></div>
-</div></header>
-<main>
-<a class="back" href="/" id="back">← Vissza a főoldalra</a>
-<article>
-<!-- ================= MAGYAR ================= -->
-<div id="hu">
-  <h1>Adatvédelmi nyilatkozat</h1>
-  <p class="meta">Utolsó frissítés: 2026. október</p>
-
-  <h2>1. Ki üzemelteti az oldalt?</h2>
-  <p>Az EzExcel egy független közösségi oldal Excel-sablonok megosztására. Az üzemeltető az <strong>EzExcel csapat</strong>. Adatvédelmi kérdésekben az <strong>ezexcelcontact@gmail.com</strong> címen érhetsz el minket.</p>
-
-  <h2>2. Milyen adatokat kezelünk?</h2>
-  <ul>
-    <li><strong>Regisztráció nincs.</strong> Az oldal használatához nem kérünk nevet, e-mail-címet vagy jelszót.</li>
-    <li><strong>A böngésződ helyi tárolója (localStorage).</strong> Az oldal az eszközödön tárolja a választott nyelvet, a sablonlista gyorsítótárát és a véletlenszerűen generált álnevedet, valamint az ötleteid és szavazataid helyi másolatát. Ezek az eszközödön maradnak, a böngésző adatainak törlésével bármikor eltávolíthatók.</li>
-    <li><strong>Feltöltött sablonok, ötletek és hozzászólások.</strong> Amit feltöltesz vagy beküldesz (sablon fájl, név, leírás, használati útmutató, ötlet, hozzászólás), azt <strong>nyilvánosan megjelenítjük</strong>, és a Google szolgáltatásaiban (Google Drive, Google Apps Script) tároljuk. Kérjük, ne tölts fel személyes adatot vagy bizalmas dokumentumot. Tartalom eltávolítását az e-mail-címünkön kérheted.</li>
-    <li><strong>Letöltésszámláló.</strong> A sablonok letöltéseit névtelen számláló követi, személyhez nem kötjük.</li>
-    <li><strong>Technikai naplók.</strong> A tárhelyszolgáltató és a használt Google-szolgáltatások a működéshez szükséges technikai adatokat (például IP-cím, böngésző típusa) naplózhatják a saját adatkezelési tájékoztatójuk szerint.</li>
-  </ul>
-
-  <h2>3. Sütik és hirdetések (Google AdSense)</h2>
-  <p>Az oldal a Google AdSense szolgáltatással jelenít meg hirdetéseket. A Google külső szolgáltatóként sütiket (cookie) és hasonló azonosítókat használhat arra, hogy az oldalunkon és az interneten korábban tett látogatásaid alapján hirdetéseket jelenítsen meg. Az adatok kezelésének részleteit a Google tájékoztatója tartalmazza: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">hogyan használja a Google az adatokat a partneroldalakon</a>.</p>
-  <ul>
-    <li><strong>Hozzájárulás (EGT, Egyesült Királyság, Svájc).</strong> Ha ezekből az országokból látogatod az oldalt, a Google hozzájárulás-kezelő üzenete megkérdezi, hozzájárulsz-e a sütik használatához és a személyre szabott hirdetésekhez. Döntésedet bármikor módosíthatod vagy visszavonhatod az üzenet által az oldalon biztosított beállítás-módosító linken.</li>
-    <li><strong>Személyre szabott hirdetések kikapcsolása.</strong> A <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google hirdetési beállításaiban</a> kikapcsolhatod a személyre szabást. Az európai <a href="https://www.youronlinechoices.com" rel="noopener" target="_blank">youronlinechoices.com</a> oldalon a hirdetési partnerek többségénél élhetsz a letiltással.</li>
-    <li><strong>Böngésző-beállítások.</strong> A sütiket a böngésződben is letilthatod vagy törölheted. Ilyenkor az oldal egyes funkciói (például a nyelv megjegyzése) nem működnek.</li>
-  </ul>
-
-  <h2>4. Google betűtípusok</h2>
-  <p>A főoldal a Google Fonts szolgáltatásból tölti be a betűtípusokat. Ilyenkor az IP-címed a Google szervereihez is eljut. Ez az adatvédelmi oldal külső szolgáltatást nem tölt be.</p>
-
-  <h2>5. A jogaid</h2>
-  <p>A személyes adataidra vonatkozóan jogod van a tájékoztatáshoz és a hozzáféréshez, a helyesbítéshez, a törléshez, az adatkezelés korlátozásához, az adathordozhatósághoz és a tiltakozáshoz, a hozzájárulásodat pedig bármikor visszavonhatod. Kérésed küldd az <strong>ezexcelcontact@gmail.com</strong> címre. Panasszal fordulhatsz a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH, <a href="https://www.naih.hu" rel="noopener" target="_blank">naih.hu</a>).</p>
-
-  <h2>6. Változások</h2>
-  <p>Ezt a nyilatkozatot időről időre frissíthetjük. A mindenkor hatályos változat ezen az oldalon érhető el.</p>
-  <p class="note">Az EzExcel egy független közösségi oldal, nem áll kapcsolatban a Microsofttal. Az Excel a Microsoft Corporation védjegye.</p>
+  <span class="doc" id="docname">Munkafüzet1 – Adatvédelmi nyilatkozat</span>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="hu">HU</button><button type="button" data-lang="en">EN</button>
+  </div>
+</header>
+<nav class="ribbon" aria-label="Fő navigáció">
+  <a href="index.html#home" data-page="home">Főoldal</a>
+  <a href="index.html#brainstorming" data-page="brainstorming">Brainstorming</a>
+  <a href="index.html#templates" data-page="templates">Sablonok</a>
+  <a href="index.html#about" data-page="about">Rólunk</a>
+  <a href="adatvedelem.html" data-page="privacy" aria-current="page">Adatvédelmi nyilatkozat</a>
+  <a href="index.html#contact" data-page="contact">Kapcsolat</a>
+</nav>
+<div class="fbar" aria-hidden="true">
+  <div class="namebox" id="namebox">E5</div>
+  <div class="fx">fx</div>
+  <div class="formula"><span class="fn">=BIZTONSÁG</span>(<span class="str">"Adatvédelem"</span>)</div>
 </div>
 
-<!-- ================= ENGLISH ================= -->
-<div id="en" hidden>
-  <h1>Privacy Policy</h1>
-  <p class="meta">Last updated: October 2026</p>
+<div class="sheet">
+  <div class="corner"></div>
+  <div class="colhead" id="colhead"></div>
+  <div class="rowhead" id="rowhead"></div>
+  <main class="cells" id="cells">
+    <section class="page">
+      <a class="back" href="index.html#home" id="back">← Vissza a főoldalra</a>
+      
+      <div class="block sel">
+        <div class="block-h"><span>E5:K35</span><span>Adatvédelem</span></div>
+        <div class="block-b">
+          
+          <!-- ================= MAGYAR ================= -->
+          <div id="hu">
+            <h1>Adatvédelmi nyilatkozat</h1>
+            <p class="meta">Utolsó frissítés: 2026. október</p>
 
-  <h2>1. Who runs this site?</h2>
-  <p>EzExcel is an independent community site for sharing Excel templates. The operator is the <strong>EzExcel team</strong>. For privacy questions, contact us at <strong>ezexcelcontact@gmail.com</strong>.</p>
+            <h2>1. Ki üzemelteti az oldalt?</h2>
+            <p>Az EzExcel egy független közösségi oldal Excel-sablonok megosztására. Az üzemeltető az <strong>EzExcel csapat</strong>. Adatvédelmi kérdésekben az <strong>ezexcelcontact@gmail.com</strong> címen érhetsz el minket.</p>
 
-  <h2>2. What data do we process?</h2>
-  <ul>
-    <li><strong>No registration.</strong> We do not ask for a name, e-mail address or password to use the site.</li>
-    <li><strong>Your browser’s local storage.</strong> The site stores your chosen language, a cache of the template list and a randomly generated pseudonym on your device, as well as a local copy of your ideas and votes. These stay on your device and can be removed at any time by clearing your browser data.</li>
-    <li><strong>Uploaded templates, ideas and comments.</strong> Whatever you upload or submit (template file, name, description, user guide, idea, comment) is <strong>displayed publicly</strong> and stored in Google services (Google Drive, Google Apps Script). Please do not upload personal data or confidential documents. You can ask us to remove content by e-mail.</li>
-    <li><strong>Download counter.</strong> Template downloads are counted anonymously and are not linked to any person.</li>
-    <li><strong>Technical logs.</strong> The hosting provider and the Google services we use may log technical data needed for operation (such as IP address and browser type) according to their own privacy notices.</li>
-  </ul>
+            <h2>2. Milyen adatokat kezelünk?</h2>
+            <ul>
+              <li><strong>Regisztráció nincs.</strong> Az oldal használatához nem kérünk nevet, e-mail-címet vagy jelszót.</li>
+              <li><strong>A böngésződ helyi tárolója (localStorage).</strong> Az oldal az eszközödön tárolja a választott nyelvet, a sablonlista gyorsítótárát és a véletlenszerűen generált álnevedet, valamint az ötleteid és szavazataid helyi másolatát. Ezek az eszközödön maradnak, a böngésző adatainak törlésével bármikor eltávolíthatók.</li>
+              <li><strong>Feltöltött sablonok, ötletek és hozzászólások.</strong> Amit feltöltesz vagy beküldesz (sablon fájl, név, leírás, használati útmutató, ötlet, hozzászólás), azt <strong>nyilvánosan megjelenítjük</strong>, és a Google szolgáltatásaiban (Google Drive, Google Apps Script) tároljuk. Kérjük, ne tölts fel személyes adatot vagy bizalmas dokumentumot. Tartalom eltávolítását az e-mail-címünkön kérheted.</li>
+              <li><strong>Letöltésszámláló.</strong> A sablonok letöltéseit névtelen számláló követi, személyhez nem kötjük.</li>
+              <li><strong>Technikai naplók.</strong> A tárhelyszolgáltató és a használt Google-szolgáltatások a működéshez szükséges technikai adatokat (például IP-cím, böngésző típusa) naplózhatják a saját adatkezelési tájékoztatójuk szerint.</li>
+            </ul>
 
-  <h2>3. Cookies and advertising (Google AdSense)</h2>
-  <p>This site displays ads through Google AdSense. As a third-party vendor, Google may use cookies and similar identifiers to serve ads based on your previous visits to this site and other sites on the internet. Details are in Google’s notice: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses information from sites or apps that use its services</a>.</p>
-  <ul>
-    <li><strong>Consent (EEA, United Kingdom, Switzerland).</strong> If you visit from these regions, Google’s consent message asks whether you agree to the use of cookies and to personalised ads. You can change or withdraw your choice at any time using the settings link that the message provides on the site.</li>
-    <li><strong>Turning off personalised ads.</strong> You can switch off personalisation in <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google’s ad settings</a>. On the European <a href="https://www.youronlinechoices.com" rel="noopener" target="_blank">youronlinechoices.com</a> site you can opt out of most ad partners.</li>
-    <li><strong>Browser settings.</strong> You can also block or delete cookies in your browser. Some site features (such as remembering your language) will then not work.</li>
-  </ul>
+            <h2>3. Sütik és hirdetések (Google AdSense)</h2>
+            <p>Az oldal a Google AdSense szolgáltatással jelenít meg hirdetéseket. A Google külső szolgáltatóként sütiket (cookie) és hasonló azonosítókat használhat arra, hogy az oldalunkon és az interneten korábban tett látogatásaid alapján hirdetéseket jelenítsen meg. Az adatok kezelésének részleteit a Google tájékoztatója tartalmazza: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">hogyan használja a Google az adatokat a partneroldalakon</a>.</p>
+            <ul>
+              <li><strong>Hozzájárulás (EGT, Egyesült Királyság, Svájc).</strong> Ha ezekből az országokból látogatod az oldalt, a Google hozzájárulás-kezelő üzenete megkérdezi, hozzájárulsz-e a sütik használatához és a személyre szabott hirdetésekhez. Döntésedet bármikor módosíthatod vagy visszavonhatod az üzenet által az oldalon biztosított beállítás-módosító linken.</li>
+              <li><strong>Személyre szabott hirdetések kikapcsolása.</strong> A <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google hirdetési beállításaiban</a> kikapcsolhatod a személyre szabást. Az európai <a href="https://www.youronlinechoices.com" rel="noopener" target="_blank">youronlinechoices.com</a> oldalon a hirdetési partnerek többségénél élhetsz a letiltással.</li>
+              <li><strong>Böngésző-beállítások.</strong> A sütiket a böngésződben is letilthatod vagy törölheted. Ilyenkor az oldal egyes funkciói (például a nyelv megjegyzése) nem működnek.</li>
+            </ul>
 
-  <h2>4. Google Fonts</h2>
-  <p>The main site loads its fonts from Google Fonts, so your IP address is also sent to Google’s servers. This privacy page does not load any external service.</p>
+            <h2>4. Google betűtípusok</h2>
+            <p>A főoldal a Google Fonts szolgáltatásból tölti be a betűtípusokat. Ilyenkor az IP-címed a Google szervereihez is eljut. Ez az adatvédelmi oldal külső szolgáltatást nem tölt be.</p>
 
-  <h2>5. Your rights</h2>
-  <p>Regarding your personal data you have the right to information and access, rectification, erasure, restriction of processing, data portability and objection, and you can withdraw your consent at any time. Send your request to <strong>ezexcelcontact@gmail.com</strong>. You may lodge a complaint with the Hungarian National Authority for Data Protection and Freedom of Information (NAIH, <a href="https://www.naih.hu" rel="noopener" target="_blank">naih.hu</a>) or your local data protection authority.</p>
+            <h2>5. A jogaid</h2>
+            <p>A személyes adataidra vonatkozóan jogod van a tájékoztatáshoz és a hozzáféréshez, a helyesbítéshez, a törléshez, az adatkezelés korlátozásához, az adathordozhatósághoz és a tiltakozáshoz, a hozzájárulásodat pedig bármikor visszavonhatod. Kérésed küldd az <strong>ezexcelcontact@gmail.com</strong> címre. Panasszal fordulhatsz a Nemzeti Adatvédelmi és Információszabadság Hatósághoz (NAIH, <a href="https://www.naih.hu" rel="noopener" target="_blank">naih.hu</a>).</p>
 
-  <h2>6. Changes</h2>
-  <p>We may update this policy from time to time. The current version is always available on this page.</p>
-  <p class="note">EzExcel is an independent community site and is not affiliated with Microsoft. Excel is a trademark of Microsoft Corporation.</p>
+            <h2>6. Változások</h2>
+            <p>Ezt a nyilatkozatot időről időre frissíthetjük. A mindenkor hatályos változat ezen az oldalon érhető el.</p>
+            <p class="note">Az EzExcel egy független közösségi oldal, nem áll kapcsolatban a Microsofttal. Az Excel a Microsoft Corporation védjegye.</p>
+          </div>
+
+          <!-- ================= ENGLISH ================= -->
+          <div id="en" hidden>
+            <h1>Privacy Policy</h1>
+            <p class="meta">Last updated: October 2026</p>
+
+            <h2>1. Who runs this site?</h2>
+            <p>EzExcel is an independent community site for sharing Excel templates. The operator is the <strong>EzExcel team</strong>. For privacy questions, contact us at <strong>ezexcelcontact@gmail.com</strong>.</p>
+
+            <h2>2. What data do we process?</h2>
+            <ul>
+              <li><strong>No registration.</strong> We do not ask for a name, e-mail address or password to use the site.</li>
+              <li><strong>Your browser’s local storage.</strong> The site stores your chosen language, a cache of the template list and a randomly generated pseudonym on your device, as well as a local copy of your ideas and votes. These stay on your device and can be removed at any time by clearing your browser data.</li>
+              <li><strong>Uploaded templates, ideas and comments.</strong> Whatever you upload or submit (template file, name, description, user guide, idea, comment) is <strong>displayed publicly</strong> and stored in Google services (Google Drive, Google Apps Script). Please do not upload personal data or confidential documents. You can ask us to remove content by e-mail.</li>
+              <li><strong>Download counter.</strong> Template downloads are counted anonymously and are not linked to any person.</li>
+              <li><strong>Technical logs.</strong> The hosting provider and the Google services we use may log technical data needed for operation (such as IP address and browser type) according to their own privacy notices.</li>
+            </ul>
+
+            <h2>3. Cookies and advertising (Google AdSense)</h2>
+            <p>This site displays ads through Google AdSense. As a third-party vendor, Google may use cookies and similar identifiers to serve ads based on your previous visits to this site and other sites on the internet. Details are in Google’s notice: <a href="https://policies.google.com/technologies/partner-sites" rel="noopener" target="_blank">how Google uses information from sites or apps that use its services</a>.</p>
+            <ul>
+              <li><strong>Consent (EEA, United Kingdom, Switzerland).</strong> If you visit from these regions, Google’s consent message asks whether you agree to the use of cookies and to personalised ads. You can change or withdraw your choice at any time using the settings link that the message provides on the site.</li>
+              <li><strong>Turning off personalised ads.</strong> You can switch off personalisation in <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google’s ad settings</a>. On the European <a href="https://www.youronlinechoices.com" rel="noopener" target="_blank">youronlinechoices.com</a> site you can opt out of most ad partners.</li>
+              <li><strong>Browser settings.</strong> You can also block or delete cookies in your browser. Some site features (such as remembering your language) will then not work.</li>
+            </ul>
+
+            <h2>4. Google Fonts</h2>
+            <p>The main site loads its fonts from Google Fonts, so your IP address is also sent to Google’s servers. This privacy page does not load any external service.</p>
+
+            <h2>5. Your rights</h2>
+            <p>Regarding your personal data you have the right to information and access, rectification, erasure, restriction of processing, data portability and objection, and you can withdraw your consent at any time. Send your request to <strong>ezexcelcontact@gmail.com</strong>. You may lodge a complaint with the Hungarian National Authority for Data Protection and Freedom of Information (NAIH, <a href="https://www.naih.hu" rel="noopener" target="_blank">naih.hu</a>) or your local data protection authority.</p>
+
+            <h2>6. Changes</h2>
+            <p>We may update this policy from time to time. The current version is always available on this page.</p>
+            <p class="note">EzExcel is an independent community site and is not affiliated with Microsoft. Excel is a trademark of Microsoft Corporation.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
-</article>
-</main>
-<footer>© 2026 EzExcel</footer>
+
+<footer>
+  <div class="tabs">
+    <div class="nav" aria-hidden="true">◀ ▶</div>
+    <a href="index.html#home">Főoldal</a>
+    <a href="index.html#brainstorming">Brainstorming</a>
+    <a href="index.html#templates">Sablonok</a>
+    <a href="index.html#about">Rólunk</a>
+    <a href="adatvedelem.html" aria-current="page">Adatvédelmi nyilatkozat</a>
+    <a href="index.html#contact">Kapcsolat</a>
+  </div>
+  <div class="status">
+    <span id="copy">© 2026 EzExcel. Minden jog fenntartva.</span>
+    <span>Kész</span>
+  </div>
+  <p class="disclaimer">Az EzExcel független közösségi oldal, nem áll kapcsolatban a Microsofttal. Excel a Microsoft Corporation védjegye.</p>
+</footer>
+
 <script>
 (function(){
+  const cols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat('AA AB AC AD AE AF'.split(' '));
+  document.getElementById('colhead').innerHTML = cols.map(c=>`<span>${c}</span>`).join('');
+  let rows=''; for(let i=1;i<=400;i++) rows+=`<span>${i}</span>`; document.getElementById('rowhead').innerHTML = rows;
+  const cells = document.getElementById('cells');
+  cells.addEventListener('scroll', ()=>{ document.getElementById('colhead').scrollLeft = cells.scrollLeft; document.getElementById('rowhead').scrollTop = cells.scrollTop; });
+
   var lang = 'hu';
   try { var s = JSON.parse(localStorage.getItem('ezx:lang') || 'null'); if (s === 'hu' || s === 'en') lang = s; else if (!/^hu/i.test(navigator.language || 'hu')) lang = 'en'; } catch(e) {}
   var q = /[?&]lang=(hu|en)/.exec(location.search); if (q) lang = q[1];
+  
   function show(l){
     document.documentElement.lang = l;
     document.getElementById('hu').hidden = l !== 'hu';
@@ -134,8 +263,11 @@ footer{max-width:860px;margin:0 auto;padding:0 20px 30px;color:var(--muted);font
     document.querySelectorAll('[data-lang]').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.lang === l); });
     document.getElementById('back').textContent = l === 'hu' ? '← Vissza a főoldalra' : '← Back to the main page';
     document.title = (l === 'hu' ? 'Adatvédelmi nyilatkozat' : 'Privacy Policy') + ' – EzExcel';
+    document.getElementById('docname').textContent = (l === 'hu' ? 'Munkafüzet1 – Adatvédelmi nyilatkozat' : 'Workbook1 – Privacy Policy');
+    document.getElementById('copy').textContent = l === 'hu' ? '© 2026 EzExcel. Minden jog fenntartva.' : '© 2026 EzExcel. All rights reserved.';
     try { localStorage.setItem('ezx:lang', JSON.stringify(l)); } catch(e) {}
   }
+  
   document.querySelectorAll('[data-lang]').forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.lang); }); });
   show(lang);
 })();
