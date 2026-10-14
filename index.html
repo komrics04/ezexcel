@@ -315,7 +315,7 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
   <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
   <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
   <a href="#about" data-page="about" data-i18n="nav.about"></a>
-  <a href="#privacy" data-page="privacy" data-i18n="nav.privacy"></a>
+  <a href="adatvedelem.html" data-page="privacy" data-i18n="nav.privacy"></a>
   <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
 </nav>
 <div class="fbar" aria-hidden="true">
@@ -465,7 +465,7 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
     <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
     <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
     <a href="#about" data-page="about" data-i18n="nav.about"></a>
-    <a href="#privacy" data-page="privacy" data-i18n="nav.privacy"></a>
+    <a href="adatvedelem.html" data-page="privacy" data-i18n="nav.privacy"></a>
     <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
   </div>
   <div class="status">
@@ -732,6 +732,7 @@ function route(){
   const raw = location.hash.replace('#','') || 'home';
   const [p, sub] = raw.split('/');
   const key = pages[p] ? p : 'home', cfg = pages[key];
+  if (key === 'privacy'){ location.replace('adatvedelem.html'); return; }   // az adatvédelmi nyilatkozatnak saját webcíme van (AdSense)
   const newDetail = (key==='templates' && sub) ? decodeURIComponent(sub) : null;
   document.querySelectorAll('.page').forEach(s => s.hidden = s.dataset.page !== key);
   document.querySelectorAll('a[data-page]').forEach(a => a.dataset.page===key ? a.setAttribute('aria-current','page') : a.removeAttribute('aria-current'));
