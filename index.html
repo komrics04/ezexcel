@@ -311,12 +311,12 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
   </div>
 </header>
 <nav class="ribbon" data-i18n-aria="aria.nav">
-  <a href="#home" data-page="home" data-i18n="nav.home"></a>
-  <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
-  <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
-  <a href="#about" data-page="about" data-i18n="nav.about"></a>
+  <a href="/#home" data-page="home" data-i18n="nav.home"></a>
+  <a href="/#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
+  <a href="/#templates" data-page="templates" data-i18n="nav.tpl"></a>
+  <a href="/#about" data-page="about" data-i18n="nav.about"></a>
   <a href="adatvedelem/" data-page="privacy" data-i18n="nav.privacy"></a>
-  <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
+  <a href="/#contact" data-page="contact" data-i18n="nav.contact"></a>
 </nav>
 <div class="fbar" aria-hidden="true">
   <div class="namebox" id="namebox">A1</div>
@@ -344,7 +344,7 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
           <span class="ico">💡</span>
           <span><strong data-i18n="home.brain.t"></strong><small data-i18n="home.brain.d"></small></span>
         </a>
-        <a href="#templates">
+        <a href="/#templates">
           <span class="ico">📊</span>
           <span><strong data-i18n="home.tpl.t"></strong><small data-i18n="home.tpl.d"></small></span>
         </a>
@@ -440,12 +440,12 @@ dialog::backdrop{background:rgba(6,38,33,.45)}
 <footer>
   <div class="tabs">
     <div class="nav" aria-hidden="true">◀ ▶</div>
-    <a href="#home" data-page="home" data-i18n="nav.home"></a>
-    <a href="#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
-    <a href="#templates" data-page="templates" data-i18n="nav.tpl"></a>
-    <a href="#about" data-page="about" data-i18n="nav.about"></a>
+    <a href="/#home" data-page="home" data-i18n="nav.home"></a>
+    <a href="/#brainstorming" data-page="brainstorming" data-i18n="nav.brain"></a>
+    <a href="/#templates" data-page="templates" data-i18n="nav.tpl"></a>
+    <a href="/#about" data-page="about" data-i18n="nav.about"></a>
     <a href="adatvedelem/" data-page="privacy" data-i18n="nav.privacy"></a>
-    <a href="#contact" data-page="contact" data-i18n="nav.contact"></a>
+    <a href="/#contact" data-page="contact" data-i18n="nav.contact"></a>
   </div>
   <div class="status">
     <span id="copy"></span>
@@ -1011,7 +1011,7 @@ function renderTpls(){
         <div class="thumb">${x.img ? `<img src="${esc(fastImg(x.img,720))}" data-orig="${esc(x.img)}" alt="${esc(x.name)}${t('preview')}" ${i<4?'':'loading="lazy"'} decoding="async">` : esc(x.fileName)}</div>
         <div class="block-b">
           <div class="tags"><span class="tag">${esc(cat(x.cat))}</span><span class="tag lg" title="${esc(langName(lgOf(x)))}">${flagImg(lgOf(x))}${lgOf(x)==='any' ? '' : esc(lgOf(x).toUpperCase())}</span></div>
-          <h3><a href="#templates/${encodeURIComponent(x.id)}">${esc(x.name)}</a></h3>${x.desc ? `<p class="tpl-desc">${esc(x.desc)}</p>` : ''}
+          <h3><a href="/#templates/${encodeURIComponent(x.id)}">${esc(x.name)}</a></h3>${x.desc ? `<p class="tpl-desc">${esc(x.desc)}</p>` : ''}
           <div class="actions">
             <a class="btn" href="${esc(x.file)}" download="${esc(x.fileName)}" data-dl="${esc(x.id)}" style="text-decoration:none">${t('download')}</a>
             <span class="meta">⬇ ${x.dl} ·${ago(x.t)}</span>
@@ -1127,7 +1127,7 @@ function renderTplView(){
   const lv = $('#tpl-listview'), dv = $('#tpl-detail');
   if (!detailId){ lv.hidden = false; dv.hidden = true; lastDetailKey = ''; return; }
   lv.hidden = true; dv.hidden = false;
-  const back = `<a class="back" href="#templates">← ${t('back')}</a>`;
+  const back = `<a class="back" href="/#templates">← ${t('back')}</a>`;
   const x = tpls.find(y => String(y.id) === detailId);
   if (!x){
     const waiting = !tplsLoaded || tplsLoading;
