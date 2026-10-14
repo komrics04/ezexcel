@@ -680,13 +680,18 @@ let current = null;
 // a sablonoldal megnyitásakor hozzuk létre. Egy megnyitás (lista vagy sablon profiloldal) = egy hirdetéskérés.
 // FIX méretű egységnél (pl. 728x90) telefonon nem jelenik meg hirdetés. Mobilra hozz létre az AdSense-ben RESZPONZÍV
 // megjelenítési egységet, írd be az új slot azonosítót ide, és állítsd a fixed értéket null-ra.
-const ADS = { client: 'ca-pub-4135085093423612', slot: '1089054026', fixed: { w: 728, h: 90 }, minGapMs: 20000 };
+const ADS = { 
+  client: 'ca-pub-4135085093423612', 
+  slot: '4047684425', 
+  fixed: null, // reszponsív
+  minGapMs: 20000 
+};
 window.EZX_ADS = ADS;     // (tesztelés / hibakeresés: a konzolban is elérhető)
 let adKey = '', adAt = 0;
 function mountAd(){
   const host = document.getElementById('ad-tpl');
   if (!host || !ADS.client || !ADS.slot) return;
-  if (adKey === location.hash) return;                       // ugyanaz a nézet: nem kérünk újat
+  if (adKey === location.hash) return;                        // ugyanaz a nézet: nem kérünk újat
   if (Date.now() - adAt < ADS.minGapMs && host.firstChild){ adKey = location.hash; return; }   // gyors oda-vissza lapozásnál marad a régi
   adKey = location.hash;
   host.innerHTML = ''; host.hidden = false;
@@ -697,7 +702,13 @@ function mountAd(){
   ins.style.cssText = ADS.fixed ? `display:inline-block;width:${ADS.fixed.w}px;height:${ADS.fixed.h}px` : 'display:block';
   ins.setAttribute('data-ad-client', ADS.client);
   ins.setAttribute('data-ad-slot', ADS.slot);
-  if (!ADS.fixed){ ins.setAttribute('data-ad-format', 'auto'); ins.setAttribute('data-full-width-responsive', 'true'); }
+  
+  // Fluid / In-article hirdetés specifikus beállítások:
+  if (!ADS.fixed){ 
+    ins.setAttribute('data-ad-format', 'fluid'); 
+    ins.setAttribute('data-ad-layout-key', '-6g+cc+1w-1m+av'); 
+  }
+  
   host.innerHTML = `<span class="ad-label">${t('ad')}</span>`;
   host.appendChild(ins);
   adAt = Date.now();
